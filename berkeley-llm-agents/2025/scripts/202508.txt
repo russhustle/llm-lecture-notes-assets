@@ -1,0 +1,1186 @@
+THOMAS HUBERT: Hello, everyone! I'm really, really
+glad to be here and be able to share a little
+bit more about our work. And I would, of course, like
+to organize the organizers for inviting me to be
+part of this class. All right. So 3 and 1/2 years ago, I had
+just finished two big projects. One of them was AlphaCode,
+the other one was AlphaTensor. I'll tell you a little bit
+more about those in the future. But basically, during the
+Christmas holidays in 2021, I stumbled on this
+talk from 2019 called The Future
+of Mathematics, and the talk is over an hour. But the comments were
+extremely positive. One person was saying, this is
+the best lecture and the best YouTube video ever. I've never watched
+anything more enjoyable. So, I was pretty intrigued. And I press Play, and it started
+a chain of ineluctable events that basically takes me
+here in front of you today. So in this talk, rather than
+focusing on the details, I'd really like to
+focus on the big ideas that allowed us to
+work on AlphaProof, and why we believe it has
+an integral role to play in the future of mathematics. I will basically talk
+first about the rise of formal mathematics
+and what that is, and then about our
+experience in reinforcement learning and the
+lessons we took away, and how these two things
+meet with other proof. So Galileo said,
+quite a long time ago, that the laws of
+nature are written in the language of mathematics. It was an incredible
+prediction or insight, because we've made a lot
+of progress since Galileo. And indeed now, just a few
+equations on a single page can describe how the universe
+works extremely precisely. Also in a famous essay called
+"The Unreasonable Effectiveness of Mathematics." Eugene Wigner argues that
+mathematics, not only have a descriptive power, but
+they also have predictive power. And one example he gives,
+if I'm not mistaken, is the development
+of matrix algebra and its use in
+quantum mechanics. Of course, once you can describe
+and predict the natural world, you can start to shape it. And if you look around us
+in the world we live in, the civilization, the
+culture, all the tech, that makes our current world-- well, basically mathematics is
+just at the core of everything. And maybe I would also like
+to argue that mathematics is a root node to intelligence. The root node is a
+word that Dennis really likes to talk about. And basically, it means
+that from that root is going to blossom a whole
+tree of possibilities. And why could we argue that
+is because mathematics use-- requires reasoning and planning,
+generalization and abstraction, knowledge and creativity, open
+ended and unbounded complexity. And over the years,
+I also understood that mathematics is not
+just this application of logical rules,
+one after the other. It's really a art. And so it even requires
+an eye for beauty. And so I used a lot
+of keywords here, and that you'll see them
+reappearing during my talk. And I hope that will make
+this a bit more concrete. In summary, I've tried to
+convey to you that mathematics is a root node to understand
+the natural world, but it also might be a
+root node for intelligence. So I think it's worth really
+thinking about mathematics and see what can we do for that. But before that,
+I'd like to give you a really super brief history of
+formalization in mathematics, because basically
+mathematics hasn't always looked the way it looks now. About 500 years before
+Christ, the Greeks had a great revelation. They understood the
+importance of the concept of mathematical proof
+and in some sense, can you really imagine? It's like you find
+something that will tell you with certainty that you
+have attained eternal truth and you can discover more and
+more truths of our universe. It must have felt incredible. And since then, proofs is
+at the heart of mathematics. And what constitutes
+a proof, however, has evolved over the millenniums
+of mathematical history. One of the first breakthroughs,
+I'm sure, that you know is with Euclid and his book
+Elements that had definitions, axioms and theorems. And so that's really the start
+of axiomatization that has really been developed much more
+in the early 20th century with Hilbert Program that really
+developed these to land on what we have now. And so that's
+axiomatization on one side. On the other side, like
+mathematics, at the beginning it didn't really use symbols. And that's for a very long time. Even if the Greeks had
+taken find axiomatization and started to use some
+symbols, the rest of the world describe really mathematics
+with a lot of words. And so here you have
+a square and 10 times its root is equal to 39. So today we would write this as
+x squared plus 10x equals 39. But look at this description of
+how do you solve these things. Take the coefficient of the
+root, divide it into two parts and multiply one
+of them by itself, add these to 39,
+cetera, et cetera. Now, you just write
+this concise formula. And there are two things
+here that comes, it's first, replacing-- using special-- in the
+machine learning lingo, using special
+tokens for numbers. We represent-- the digits
+have special characters. But also even more important-- I don't know which
+one is more important, but that helps with also-- I think only in
+the 17th century, René Descartes comes up with the
+idea of using the early letter of the alphabet to denote
+constants and the end of the letter-- of the alphabet x, y,
+z to describe unknowns. And so that's basically how
+you end up with this formula. But it takes-- I don't know how many-- it takes
+until the 17th century to really come up with those notations. And I think it's
+not hard to argue that precise notation and
+axiomatization really eliminated ambiguities and logical error,
+that symbolic notation made complex manipulations
+more tractable and requires much
+less cognitive load. It also packs information
+extremely densely in terms of notation. I can't remember exactly who
+said that and if it was a joke or not, but someone was
+arguing that maybe the Einstein notations was his
+biggest contribution. That might be pushing
+it a little bit with given the impact of general
+relativity, special relativity, and even his work to
+introduce quantum mechanics. But certainly, Einstein
+notations are very important. Actually, if you read
+machine learning code, you'll see that
+appearing a lot as well. But basically, once
+you have those symbols and you can lift yourself
+up from particular examples, you start to be able to observe
+different common patterns across different contexts. And so that's where abstraction
+and generalization comes up, you can unify disparate
+areas of mathematics. And actually, you can
+even create new fields. And so my favorite
+example here is really the people who are
+looking at the 5 axioms of Euclidean geometry. And actually, I don't know,
+for thousands of years, I think, trying to see if they
+could remove the fifth axiom. And that actually led to
+non-Euclidean geometry. And in particular
+Riemannian geometry, which in this theme
+of general relativity was essential to get
+general relativity. So this formalization has
+helped mathematics, but also the other sciences,
+in particular physics. And so I would like to argue
+that basically computer formalization, which basically
+means writing mathematics in code, is just the next
+logical phase in this grand arc of mathematical formalism. So there's been
+quite a few languages to describe mathematical
+reasoning, such as coq and Isabellle, and Lean is
+one of the most recent ones. Originally developed, I believe,
+for software verification, but also with
+mathematics in mind. And mathematicians saw
+in Lean the tool that would make the next big step
+in mathematical formalism. So it's a programming language. It's a theorem prover and
+interactive proof assistant. And Lean has a really
+vibrant open-source community of mathematicians,
+and it's been used to formalize like cutting-edge
+mathematics, fields medal mathematics. And then mathematicians
+are on a huge quest to basically build the
+math library of the future. So let me go there. It's called Mathlib. It's built open source. And basically, the free
+time of mathematicians. And it has two big goals. It aims to be
+general and unified. So general, it means that it
+has the weakest assumptions and the strongest results. And unified is that it only
+has one definition per concept. So I was actually
+pretty surprised when I learned about
+this unification idea, because I thought
+that mathematics was written in a very
+structured way already. But apparently, it turns out
+that, like for a given concept, you may have several
+papers that basically talk about the same
+concept, but they define it in a different way. That is not necessarily
+compatible with each other. And so you need to do
+quite a bit of work to actually try to find the
+unifying definition that underlies all those ideas. And so that's actually
+what takes the most time in building mastery. Maybe you can see,
+in the presentation I gave here that it's one
+monolithic library, where everything is
+connected together. And so this is very
+important for modern math because basically, modern
+math is about trying to connect all areas of math. And there's been
+observations that actually like ideas from here
+can help ideas from there. And for instance, maybe
+Fermat's Last Theorem proof is a great example of this,
+connecting two different areas to try to prove
+one huge theorem. Now, there is also something
+called the Langlands Program that really explicitly
+tries to do that and connect all these areas. So it's really
+important that you have a library that
+basically can connect all different areas of maths. Currently, the library
+covers about 80% of the undergrad curriculum, and
+most of the library, however, is above the undergraduate. So it has a lot of
+irregular coverage. And because-- I think
+particular examples are complex analysis or PDE theory. OK. All right. But why do all of this? Is because computer
+formalization unlocks enormous synergies. And maybe to explain myself a
+little bit, I have to step back. And for those of you who are
+coders, maybe just understanding the right code and be able to
+use all the software stack, that should be already a
+huge win for mathematics. But basically,
+the other property of when you write
+mathematics in code with those languages,
+such as Lean, is that you get
+perfect verification. So when you write a proof and
+you write the correct proof, Lean is going to tell
+you, yes, this is correct. And when you've
+made a mistake, Lean is going to tell you this
+is-- your proof is not correct or it's still incomplete. So from these two things,
+you get some instant wins. First, your correctness
+concerns completely disappear. You can trust giant
+proofs and you can delegate proof checking
+entirely to the computer. And so I think it's
+important to note that it's my understanding
+that it's not like all areas of mathematics
+are suffering from concerns about correctness. I think in reality,
+most maybe areas, where mathematicians feel pretty
+comfortable about their ability to discern correctness
+from mistakes. But I've been hearing that in
+maybe some of the areas that are more abstract
+areas, actually, they start to be real
+concerns for correctness. So that's not everywhere, but
+that starts to be important. So these are the instant wins. But those perfect verification
+and software stack has really a
+knock-on effect that could lead to game changers. So first, I think for all
+of you who are coders, to bring all the tools that
+we have developed for coding should already be
+a big, big win. Next, it have transformed
+mathematics into a video game. So what does this
+video game look like? Well, you have what
+are the levels? The levels are the
+different theorems. And then you can
+interact in those levels. And basically, Lean will
+tell you, yes, you've completed the level or not
+with this perfect verification feedback. You always have harder level. And maybe contrary to
+other games, where-- I don't know, you have
+to shoot other people. This is a super meaningful,
+useful and profound game. You are basically adding
+new truths for eternity. And the Lean people
+describe this as they could do
+this 14 hours a day and they are constantly getting
+positive reinforcements. This also means that it's great
+for education because like a lot younger people now are really
+used to using computers and softwares. And it's great because
+it's interactive, right? when it's fun,
+it's easy to learn. And you can also
+create software, such that the detail of-- the level of detail is
+adapted to the person who is reading rather than the level
+that the author thought was interesting. I don't know if you read
+a lot of maths papers or you look at solutions
+of some problems you are trying to solve. Sometimes people say this, well,
+this next step is quite obvious, but maybe it is
+not for you and you would love to see more detail. I have also an example
+from-- actually from my dad, who recently tried to
+learn Galois theory in a different online
+class, and so he went through week 1 and
+week 2 and week 3, all good. But then when he was
+going through week 4 and trying to do
+the homework, he realized that there was
+something he didn't understand. And he basically needed
+someone to explain to him. And he messaged the professor,
+but unfortunately, the professor didn't reply. And so he was basically
+completely stuck. But imagine that instead
+he was doing this in Lean, then Lean would
+have said exactly what is right, what is wrong,
+what is missing, et cetera. And he would be able to have
+constant feedback without having to ask his teacher. Now, I want to go
+to the last point. It's actually a point that
+has been made by Terry Tao, I think, about a year
+and a half ago, at least. And he describes that basically
+using computer formalization will unlock massive
+collaboration between mathematicians. And so why does he say that? Well, apparently
+the current state of mathematics collaboration
+is that you can do-- most of the papers are either
+single-author or two-author papers and the max is
+really five-author papers. And the reason why is
+because every author needs to check everyone else's work. And so basically, having
+more and more collaborators doesn't really scale
+because you still need to check everyone else's work. And so that's where computer
+formalization and [? password ?] verification comes in, is that
+if you could trust the computer to check the proofs,
+then suddenly you can-- it opens up working on
+mathematical projects to, I don't know, thousands of people
+because you could have someone you've never met, who lives
+in the middle of nowhere, who contributes a little bit to
+your proof of [? Lean ?] there. And then Lean will say,
+yes, this is correct. And then you can
+just move on, right? And so there's been
+maybe-- there's been a few projects like this. I think Mathlib is maybe one
+of the coolest demonstrations, where you have hundreds of
+mathematicians working together to build this library
+of the future. But I think Terry
+Tao is also arguing that you could use that
+to do new mathematics, and has actually
+launched a project in the past called
+Universal Algebra, where he was exploring that. But basically, I think
+in ML, at the moment, we are all about scaling. And here basically,
+you could scale humans to do mathematics
+and potentially maybe tackle harder problems. All right. So should everyone go to
+computer formalization? It's awesome. The reality is that there
+are still challenges for computer formalization. In my estimates, about only
+0.1% to 1% of mathematicians have adopted Lean. It's a small community of
+mathematicians, a vibrant one. But why is that? is because it's
+actually not yet a great tool for mainstream research. Like, a lot of
+programming languages, it has a steep learning
+curve, and it also requires a significant
+time investment because to get
+perfect verification, you need to be able to
+write every single detail. And so that takes
+a lot more time. Maybe that's not the place
+where you want to focus. You want to focus on the things
+you don't yet know how to solve, not on the things that
+are more obvious to you. And so that will be improved. And the tooling and
+the library matures. But at the moment, there's
+still some things missing. And obviously, there
+is also a massive lack of necessity for research. But I'm hoping
+that the arguments I've outlined in
+the slide before are going to change a
+little bit at that point. So now I just want to show you
+a little bit what it looks like. So this is a proof that
+you may know about. It's called-- it's
+about how many-- it's about proving that there is
+an infinite number of primes. And OK, so this is what
+it looks like in Lean. I hope you can see,
+that it's big enough. And so-- oops, OK. Here it is. This is the theorem statement. And I think what
+is remarkable is that because you
+can use Lean code, this looks pretty much what
+you would write yourself on a piece of paper. It says that for all n natural
+numbers, there exists p, such that p is bigger
+than n and p is prime. So that's how-- one way
+to say that there is an infinite number of primes. This is what the
+proof looks like. So fairly compact in this case. And the fact that you can
+understand all of this is because, basically Lean is a
+language-based high level syntax mirroring normal mathematics. So let me go a
+little bit on what it looks like to
+interact with this thing. So here is the first
+line of the proof. And this is actually
+the main insight that Euclid had is to consider
+first n factorial plus 1 and the mean fact of it. So what is the mean fact? Is the mean factor of
+n factorial plus 1. And so I want to
+draw your attention on the box on the right there
+called the Tactic state. And so basically, that's
+what Lean returns to you. It says, oh, here are
+the things we know. And here are the things
+we still need to prove. So we know that n
+is a natural number. We know that p is this mean
+factor of n factorial plus 1. And you still need to show
+that there exists a p, such that p is bigger
+than n and p is prime. So let's go second line. Second line says, oh, let's
+prove that n factorial plus 1 is not one. And you have actually the proof
+in line with maybe a few more characters than you really want
+to prove something this easy. But on the right,
+you see that you have a new fact in your arsenal
+is that n factorial plus 1 is not one. And then we are going to say,
+now let's prove that p is prime. And the proof you say, well,
+it's because it's basically we took the minimum factor. The minimum factor
+is obvious that it's a prime unless the thing
+you've taken up is one. And so that's why
+you have this thing you needed to prove before. And then the proof continues. And at the end, you should see
+in your Tactic state no goals. And it used to be, I think
+in a previous version of Lean that you'd also received
+this ta-da emoticon. And I think
+unfortunately, it's been removed from the
+current version of Lean. But basically, it's
+your little reward for completing this level. So just to recap;
+computer formalization. There is a really
+vibrant community that has a huge enthusiasm for this. They are building the library
+of the future in their own time. It has many, many
+ways in which it can unlock enormous synergies,
+but it still has some way to go. And this community
+and myself as well, we have the belief that
+this will inevitably play an integral role in
+the future of mathematics. Just this work pushed the
+computer formalization. All right. So now I want to talk about some
+concurrent development in AI and focus on something
+that was extremely popular a few years ago. Got forgotten a bit in
+the last couple of years. And now that is making
+a comeback big time. So hopefully, like you've
+picked up on my hints with this little reward
+and this environment, this interactiveness,
+this is video game. I want to talk about
+reinforcement learning. So what is reinforcement
+learning also known as RL? Basically it's just
+trial and error learning. It's a very, very
+general framework of an agent trying
+to achieve a goal. So really, this agent learns by
+interacting with an environment to maximize the reward. And I think there is sometimes a
+misconception about this reward that has to be very
+dense or it has to guide you towards
+the solution, et cetera. Not at all-- in the
+framework of RL, the reward can be basically
+have I achieved my goal or not? So basically, in RL, we
+really need to have a goal. But then your reward can be
+goal achieved equal than 1, otherwise 0 all the time. If you don't really have a goal
+that you want to try to achieve, then maybe that doesn't fit very
+well into the DRF framework. But if you have a go, then
+super framework to work with, especially since it has
+actually been proven to work really, really well. So here is a sample of the most
+successful stories coming out of DeepMind when RL was
+basically run at scale. So as you can see,
+there are a lot of examples of games
+and video games. So for instance, the seminal
+work on Atari, the work on go and StarCraft and Stratego. But as I said, RL is
+not confined to games. It's about trying
+to achieve a goal. And so here, like
+on the bottom row, there is AlphaDev
+and AlphaTensor, which were used to
+discover new algorithms. And the bottom on the
+right is basically RL was used to try to
+control in a token [? mac ?] the shape of the plasma to get
+better nuclear fusion reactions. So you can see, it is
+a very general setup. Now, I had myself the
+luck to spend my days on AlphaGo and its descendants. And this is what I
+call the Zero Series. And especially from
+AlphaGoZero, we showed that we could train
+an agent to master domains. And when I say
+master, I actually mean, being the world
+champion, hands down at the time when
+those things came out. And we learned to do that
+without any human input information, or we basically
+learned everything from scratch. And so I want to talk to you
+about the Zero philosophy, which I think is a great
+philosophy for research. And it's about this. If an agent can learn to
+master an environment, tabula rasa, so without
+any information, then basically
+you've demonstrably shown that you
+have a system that is able to discover and learn
+new knowledge by itself. And it also means that this
+algorithm is general and should apply to other domains. And I think the ability of being
+able to discover new knowledge. This is particularly
+important to advance science, because a big part
+of doing science is to just explore areas that
+are not yet well understood and advance knowledge. And you need to accumulate
+knowledge, continuously generate and discover
+new, interesting truths. And that's a huge
+part of doing science. So especially, for research, I
+think this is like a great way to demonstrate that you
+can discover new things. I would say that, especially now
+with the big success of LLMs, maybe a more pragmatic
+point of view is to be able to start at
+a certain knowledge base, and then you want to know
+that your algorithm is going to continue to discover
+new things from there. So you don't really
+need to start from 0. What you really need is to
+have this algorithm that can discover new things. And we've demonstrated
+that you can do this with this research and
+these AlphaZero [INAUDIBLE]. So let me go into some examples. AlphaGoZero and AlphaZero. As I said, they learned simply
+by playing against themselves, starting completely
+from random playing. And what we observed
+is that they basically rediscovered human
+patterns, accumulating thousands of years
+of human knowledge, maybe in a matter of days. But ultimately, some
+of those patterns were discarded in preference
+of new discoveries that humans don't
+even know about, they don't even know about. So in Go, I believe that,
+AlphaGo basically starting a new move at move-- I would say move 5, a move that
+wasn't even played by humans. And I've heard, if
+I'm not mistaken, that Magnus Carlsen was saying
+that because his coach was really good at
+using engines and he got to use AlphaZero like
+engines when those came out. He got a big advantage
+momentarily over the other chess players, because basically
+these things were playing very differently and
+people were not used to it and they didn't know how to
+handle those new situations. So that's Go and chess. And actually, if you look
+at, for instance, the figure I showed on the
+bottom right, and this is trying to show the
+frequency of AlphaZero playing that particular
+pattern called, for instance, the
+Caro-Kann defense. And you can see that, it
+basically discovers it after two hours of training. It plays it for about four
+hours quite consistently. And then this pattern
+starts to disappear from the games
+AlphaZero is playing, probably because it has found a
+way that makes this pattern not very interesting anymore. While on the bottom,
+the Queen's gambit seems-- the frequency at which
+the Queen's gambit is played is just increasing over
+time-- over training time. All right. Now, let me talk
+about Alpha Tensor. And so this was a
+work that was trying to find what is the best way to
+multiply two matrices together. And so maybe the naive algorithm
+that you may have learned at school requires n cube
+operations when you are trying to multiply 2n by n matrices. So for 2 by 2 matrices, you
+need eight multiplications, for 4x4 multiplications,
+you need 64 multiplications, et cetera, et cetera. And so there was at some
+point a big discovery from a person named
+Strassen that found that for 2 by 2 matrices,
+actually you could do it with only
+seven multiplications. And he also showed
+that this was optimal. You couldn't do
+better than that. But as soon as we went to
+4x4 matrices, basically, we knew nothing more than
+applying Strassen algorithm twice. And so you still reduces from
+64 to 49 multiplications. And so in AlphaTensor, we try
+to discover a new efficient and provably correct algorithm
+for basically tasks that look like matrix multiplication. And it actually did. It found a new things in
+actually many different sizes, discovering brand new knowledge
+that humans never known about. And so if you had only trained
+on what humans had known, then you would have
+never discovered those. As a big bonus, as
+part of this work, we show that basically
+we could basically-- AlphaZero could tackle
+huge action spaces. So as I wrote here,
+10 to the power 30. But basically for practical
+purposes, this is just infinite. And so all those
+successes Go, Chess, Tensor decomposition are all
+specific to a certain task if you want a certain level,
+but under the hood is basically the same AlphaZero algorithm
+that is running and making those discoveries. And so what we had
+in mind is like, is there an environment
+that captures a much broader class of tasks
+that are relevant for science? And you guessed it, our answer
+is yes, it's mathematics. But just before we
+get there, the lessons we've learned from
+all this work. So what made those
+systems superhuman? I've listed up what I
+believe are the four most important properties. First is to scale
+up trial and error. And basically to
+discover new knowledge, you need to try
+something new and be able to learn based on
+the feedback you receive. And if your feedback
+is not grounded, if you invent your own
+feedback, then it's really-- I think it's really hard once
+you venture out of what's known. And so you really
+need a way to measure if you're achieving
+your goals or not, where you are in the world--
+where are you in your solution, et cetera, et cetera. And also AlphaZero
+uses a lot of search, and I believe-- it's my
+belief that search can really accelerate the discovery
+of new paths and skills. And it's because
+most of the time when you sample a different
+action, not the action that has the highest probability. If you try that action, most of
+the time it's going to be bad, but sometimes it's
+going to be good. And you need to discover
+why that action might be good or not. And so you need to
+follow up on playing well after you play that action. And I think for instance,
+AlphaGo and Move 37 is a good example of that. It had a very low
+probability of being played, but it was still
+explored in the search. And then it was discovered
+that was a really good move. And so it became-- it was played and
+it was described as being very creative. And the final one is you need
+to have a good curriculum to take you all the
+way to superhuman. And in the AlphaZero case,
+in Go and Chess and Shogi, we relied on the fact that
+it was a two-player game. And so you could do self-play. You basically always have the
+right opponent to play against, and that was really important. So now let me try to
+connect those two. Scaled up trial and
+error; we have-- Lean is the environment to
+explore mathematics completely in silico. And the algorithm is going
+to come from AlphaZero. And again, Lean is going to
+give us this grounded feedback signal. It's going to tell us,
+what have we proved so far, what's left to be proved. And it's going to tell
+us when we are done, when we get a correct proof. For such, we can rely on
+AlphaZero's search algorithm. It works pretty well. And maybe the question
+mark is what do we do with the curriculum? And in some sense, where
+are the levels coming from? So you've understood kind
+of the idea of AlphaProof is to use Alpha
+Zero for mathematics and in particular,
+formal mathematics. So, let me make a napkin
+master plan for AlphaProof. So Lean gives us a way to
+scale up trial and error, with an environment to
+explore mathematics completely in silico, and a perfect
+feedback signal for proving. And then now, if we
+extrapolate from the work we've done in the
+other domains, and I conclude, we can therefore
+reach superhuman intelligence and discover new truths,
+just like in Go, chess, Tensor decomposition provided we
+can generate high enough quality and quantity of
+problems and RL works. So I'm very bullish on RL works. And so as I said, the
+question that remains is how can we generate high
+enough quality and quantity of problems? Where do the problems come from? And so I think one
+of the answer has to be that the problems
+partly comes from the humans. And maybe the most
+important reason why is that it's because we
+want to help human mathematics. We could try to create
+alien mathematics. But really, what we would like
+is to help human mathematics and contribute in
+that community. And maybe a more
+pragmatic reason is that humans have
+already come up with a lot of problems
+that are quite interesting. But of course, we
+should not throw away the second part,
+where AlphaProof was defined the problem. And so I think there is
+maybe two ways to slice this. One is AlphaProof
+defines a problem around human mathematics. And we've done a
+little bit of that already with auto
+formalization and test-time RL. So it's perfectly
+fine if you don't understand what I mean here. And I'll try to explain
+those a bit later. But the other part is
+basically really augmenting human mathematics. So ideally, AlphaProof
+would be able to discover new areas of mathematics,
+build new theories, et cetera, that humans find interesting. And yes, so these
+are maybe where the problems can come from. So before we move on, I
+want to take a step back because if we're thinking
+about AI for mathematics, there is potentially a choice. There is a choice of doing
+it in natural language or in formal language. So I've been arguing a long
+time now for the formal part. But actually, most effort
+in AI, at the moment, is on informal mathematics or
+doing basically mathematics in natural language. And the reason why is
+because basically all of the data of mathematics,
+by many orders of magnitude is written in natural
+language, of course. So you have this massive
+library that is growing and that contains
+quite a lot of maths, but it's still a few
+orders of magnitude smaller than the
+amount of mathematics you can find in textbooks, in
+an archive and published papers, et cetera, that are all
+written using natural language. So that's the trade
+off you get when you use formal mathematics
+is you really have a very small amount of data. That's when again, you
+bump into the question of how do you get the problems,
+where the problems come from. And however, I guess,
+it's my opinion that because natural
+language mathematics at least the reasoning part
+is not verifiable. And I believe that this is
+an issue if you're-- really your goal is to build a system
+that can go beyond human knowledge and create
+new knowledge. And you can, of course,
+improve the reliability of those systems. But the problem in
+mathematics is really that if you build on
+any false statement, then it destroys everything
+you do afterwards. So you really need
+like 100% reliability. And that's a property
+of mathematics. And that's why I think that
+verifiability is very important. And basically, Lean is already
+superhuman at verification. And I say all of
+this for mathematics, but actually I believe this
+is true for many important, impactful applications
+that we cannot solve yet. And the scientific
+problems, in particular. So in the domains,
+we cannot solve-- there is almost
+by construction-- there is not much data
+available because the domain is relatively poorly understood. And maybe it could even
+be a completely new domain that has just been discovered. You could also have applications
+that are somewhat niche. And maybe if you think
+about what AGI would do, you could argue that maybe
+mathematics is a bit niche, but it's still
+extremely impactful. And it's conceivable
+that generalization from all the other data
+would be somewhat limited. And so if we had data
+scarce, we really need a process that
+can continuously generate and discover new
+interesting facts that are not yet represented in the data. And you need a way to
+grant those new facts so that you can check
+that you are basically constantly adding new truths
+and building on top of neutrals. And so this is really
+a [? AlphaProof ?] foundational bet is that
+perfect verification will, in the long run, be the
+most important property for mathematics. So let me recap. RL meets formal math. So we have a proven recipe
+to build an agent that can discover new
+knowledge by themselves and reach superhuman
+intelligence in certain domains. And the key ingredients-- I have highlighted are
+scaled up, trial and error and grounded feedback. And basically, formal
+math provides us with those key ingredients. So these are the big ideas
+that behind [INAUDIBLE]. So now let me talk to you
+a little bit about the IMO and our participation in 2024. So first, what's the IMO? The IMO stands for the
+International Mathematics Olympiad. It's basically the
+world-championship level event in mathematics that brings
+together the best young minds from around the world. So every country brings their
+top-six high school students, and they try to solve 6 problems
+in two sessions of 4.5 hours. So basically in total, they have
+nine hours to solve 6 problems. And in these six problems,
+there are two easy problems, two medium problems
+and two hard problems. So let me first
+try to illustrate what it means to take
+the top-six high school students for the USA. So let's say there is about 17
+million high-school students. It's not like every kid
+loves maths and is going to do a maths competition. They might instead
+play video games and maybe in the
+future actually build a maths library of the future. But anyways, at the moment,
+there is about 60,000 of them that participate in
+these AMC competitions. If they do well and they
+are still into this, they might go and participate
+in this AMC competition. And so for those of you
+who have been following the benchmarks
+used in AI, you may know about this
+math benchmark that basically contains a lot of
+AMC and [? AIME ?] problems. And so the reason why is
+that, basically, AI need-- what you need to do in
+the [? AIME ?] is to-- the solution is always an
+integer between 1 and 1,000. And so it makes it easy to
+check whether your system has outputted the correct
+answer or not. Like, the correct number. You can check that
+very easily and use that as a grounded feedback. The problem is it
+doesn't tell you whether your reasoning to
+get there is correct or not. Now, if you need to
+get 177, then I still believe that it's indeed--
+it's more likely that you have correct reasoning when you
+come up with the right answer. And so that might still help
+to improve the reasoning. And basically, what's
+happening is improving the reasoning of those models. But anyway, when you do
+really well at the [? AIME, ?] you may participate in
+the USA Maths Olympiad. There's only 250 now. Then if you are
+in the top there, you may go to the IMO
+camp and from there only the top six
+people are selected. So you can see there is
+basically six or seven orders of selection. And I'm told by my colleague
+who did the IMO from-- for the UK that they
+study for 1,000 of hours, maybe an average of three
+hours for three years. So really intense training
+for this competition. Now, let me share a little
+bit about the problems. And I'll start with this
+quote from Po-Shen Loh. The Po-Shen Loh is not anyone. He's not new to the IMO. He was actually the
+coach, the national coach for USA for the last 10 years. And he said, "I tried this
+year's problems while at the IMO and it took me hours and context
+about the IMO problems are specifically selected
+to be non-standard." "So during the IMO
+itself, national coaches meet to pick the problems
+to appear on the exam. One of the most important
+tasks of that group is to avoid problems
+similar to problems that appear anywhere before. And so they go through a
+great lengths to ensure this." And so that's why basically
+we really wanted to-- we picked the IMO
+as a goal for us is because we thought there
+was really a test of reasoning and not of knowledge. And as Po-Shen Loh says,
+even for specialists, even for the national
+coach of the USA has been doing
+this for 10 years, it would take him hours
+to solve those problems. And the final property of
+participating at the 2024 IMO was that those problems--
+those problems were not leaked. And so you really need
+it to be able to reason to solve those problems. And as I said, they are easy,
+medium, and hard problems. Easy is in fact, those
+problems are not easy at all because only
+half of the participants solve two or more problems. And so you take the top six from
+each country and half of those won't be able to solve
+the easy problem. All right. So now, let's go really
+to this IMO 2024. And I'd like to relive
+a part of it with you. So we had contacted
+the IMO organization, and we had agreed with them that
+they will send us the problems. We had contacted some judges,
+also part of the competition, so they could grade
+our solutions. And we try to participate. So I just want to make sure I
+clarify exactly what our IMO participation was. And I think a good
+way to think about it is more like an Apollo program. And so what we really
+wanted to know is, can we actually reach the moon? Can our solar system solve
+the 2024 IMO problem at all? And given the
+computer that Google can give us at that time and
+enough time for doing reasoning. So it was really
+about this like, can we build a system that can
+solve those problems at all? And I think at the time
+when we got started, it was believed that this was
+like five or 10 years away. So now let me take you to seven
+months before January 2024. So we are seven
+months away, and we need to make a decision
+about geometry. So why geometry? Is because Mathlib is very
+sparse in 2D Euclidean geometry, doesn't have much of what you
+need to know about Euclidean geometry, mostly because
+researchers don't really care about 2D Euclidean geometry
+that is useful for the IMO. And so we're a bit
+unsure what to do. We are debating whether
+maybe we actually don't do geometry
+at all or we try to fill in that part in
+Mathlib so that our agent has the basic knowledge that is
+expected every student to have. And so we are debating
+this when miraculously, another group within
+Google DeepMind turned out to have been working
+on exactly the IMO geometry problem. And they already have a system
+that is very, very strong. Their system was
+already approaching gold-level medal performance
+on the geometric problems. We learned about that because
+they published a paper in Nature in early January 2024. So miracle. But we decided to join
+forces with them for July. And so AlphaGeometry
+will tackle geometry and AlphaProof will tackle
+algebra, number theory and combinatorics. A couple of months later, we
+are debating another thing. So we've been training
+AlphaProof on proving theorems. But not all questions are
+on the form prove that. And actually some require
+an answer to be determined. Like, find all x such that. And this is not just an
+integer like the [? AIME, ?] It could be-- it's the
+set of these numbers that have this property, et cetera. And so this actually
+not obvious how to do well in formal
+language because you have these tautological case where
+it says, well, what are all the x such that property
+p holds and says, what is- if the set of
+numbers where p holds? And you have a really
+easy time to prove that. But that's definitely not
+what the judges were after. And so actually,
+the answer itself is a bit of a subjective thing. And we debate what
+we should do is we do what's known
+outside as the easy mode. We basically feed in the
+correct answer to AlphaProof, and we ask AlphaProof
+to prove it. Or we go with hard
+mode, where we try to determine the answer we
+have-- something that determines the answer and we prove it. I personally don't really
+like easy and hard keywords here because it's
+fairly well known that the bit that is the hardest
+for the IMO is the proving part. It's not really to
+guess the answer. But anyway, so we are debating. We are not sure
+exactly what to do, but after thinking
+about it through, it's pretty clear that
+we need to do hard mode. And what's cool is that
+actually guessing the answer is exactly what Gemini
+has been trained on. And so we decided that we will
+generate candidates ourselves with Gemini, and we will
+attempt to prove and disprove all possible candidates
+without proof. So that's how we're
+going to participate. Now, the final thing
+we are debating about is about the input that
+the system should receive. So it will receive the
+natural language description of the problem, for
+instance, in English-- actually, if you
+participate at the IMO, you can choose the
+language in which you will receive the problems. You're-- not everyone has
+to read it in English. You can have it in Russian
+or in Chinese or in Japanese. You can choose
+your own language. Unfortunately, they don't
+propose Lean as a language. And so we are debating
+whether we will send English to the system or we'll
+ask our experts internally to manually
+formalize the problem and send that as an
+input to the system. And so we debate this a
+little bit with our judges. And very quickly, we
+have the same opinion because what we
+really care about is the mathematical reasoning and
+problem solving at the IMO. And that's what
+we are there for, not really about our
+capabilities or actually translating the problem
+in formal language. And so we decide that it's OK
+for what we want to achieve, that we will give the
+formalized problems as input. And so we ask our experts
+to manually formalize the problems for the system. So if I recap. Our protocol is going to
+look something like this. So we are going to officially
+receive the problems at 1:00 PM. the Lean experts will first
+manually formalize the problems. And then that's where the-- after that the AI comes in. So we'll generate hundreds of
+answer candidates with Gemini. AlphaProof will try to filter
+all the easily disprovable ones. And then we are going
+to run test time error. So again, I haven't told
+you what is test-time RL, but I'm going to get there. OK day one, we are there. Tuesday at 1:00 PM, we
+received the problem. And P1 is an algebra. P2 is a number theory and
+P3 is a combinatorics. And P1, P2 actually requires
+an answer to be guessed. And so we ask our experts to
+manually formalize the problem, then Gemini to guess
+and second guess, and then we get AlphaProof to
+try to disprove all those answer candidates. And so we have already
+very good signs is that AlphaProof is able
+to disprove 99% basically of guesses for those two
+problems in a matter of minutes. And so this is a
+really good sign, because we've
+observed in the past that when AlphaProof
+understands the problem, it's going to be
+able to disprove a lot of false contexts. But for problems that it
+doesn't understand at all, it wouldn't be able to
+disprove much at all. And so that's a really
+good sign for day one. On day two, we receive again,
+at 1:00 PM the problems. We knew actually
+that P4 and P5 had to be geometry and
+combinatorics because there is a rule that the easy
+and medium problems-- all categories have to appear
+in easy and medium problems. But we are pretty
+happy to see that P6 was algebra functional equation,
+because we knew that also AlphaProof was particularly
+strong in functional equation problems. That said, P6 is in
+the hard category. And it's the hardest problem. So even if it's a good
+category for AlphaProof, nothing is guaranteed at all. And it turns out
+that, AlphaGeometry is able to solve the geometry
+problem, I believe in seconds. So really, really powerful. It gets there. So basically, they came
+in, they run their thing for a few seconds and
+then it was done so then. The P5 combinatorics
+was actually very tricky and our human experts failed
+to formalize that problem on the day. And the P6 algebra,
+it also requires answers to be determined. And Gemini generated
+a bunch of answers. And when we-- AlphaProof
+try to disprove it, it could only disprove
+7% of guesses. And so it doesn't have zero
+traction on the problem, but it doesn't have probably as
+good an understanding as on P1 and P2. All right. So day 3, Thursday, AlphaProof
+hasn't proved anything yet, but we had a way
+to track progress. And so we observe on the
+day 1 problems that P1-- AlphaProof had actually
+solved half of the problem. And so actually in
+that proof, there are at least two ways to
+split that problem in two. You'd case on the fact that
+something is either even or odd or that it's rational
+or irrational. And so AlphaProof had come up
+with these ideas of splitting this problem into 2 by itself. And in, for instance,
+in the even odd case, it had proved the
+even case and hadn't finished proving the odd case. It wasn't able to
+prove the odd case yet. In P2, when we look at it,
+AlphaProof had arguably solved the whole problem. And so I don't know if
+you know, but in the IMO, there is a whole section where
+after the competition is-- after the students have
+submitted their answers, the team captains can argue
+with the judging committee that actually like this student has
+done this much and so therefore, they deserve that much points. And so if we had
+followed that process, we believe that with
+whatever AlphaProof had, we may be able to argue
+for the whole problem. So let's say, 6 out
+of 7 points there. And then on P3, the
+combinatorics problem, AlphaProof had hadn't
+made any progress. On the day two
+problem, as I said, Alpha Geometry hadalready
+solved in seconds that problem. So 7 out of 7 points. The P5 combinatorics,
+we had made no progress. I think by that time, we
+had a formalization of it. But what was really cool is
+that actually on P6 AlphaProof had made progress and had proved
+a particular case that we now know is worth two
+out of 7 points. So probably on Thursday,
+it had actually made quite a bit of progress
+on all the problems. And we may have already
+had like about 18 points. Now, Friday we
+received this email. There is the name of my
+colleague, Rishi, that actually sent by AlphaProof. And Alpha Proof is
+sending an email each time it solves one
+of the IMO problems. It says I have discovered a
+truly marvelous proof of IMO 2024 P6. But this email is
+too short to contain. And of course, it's a
+joke and the whole proof is there in the email. And so when we see
+that, we are extremely excited because we know we
+have P2, AlphaGeometry has P4. We're making progress on P1. And we have seen that it looks
+like we have solved the hardest problem, P6. So extremely excited. I run to my colleague's
+desk, Oliver Nash, who is one of our Lean experts. And so we basically copy-paste
+that proof into official Lean, and it sinks a little bit and
+says yeah, all good proofed. And so I run back to my desk. I don't think too much. I just forward that message
+to Demis and Sergey. So it's like Demis
+Hassabis and Sergey Brin. And I wanted to share
+that for two things. One, I think it shows you
+the trust I have in Lean. If I didn't trust
+Lean, I would probably wouldn't have sent
+that email seconds after getting confirmation from
+Lean that this was all good. And the second thing
+I thought a little bit after that is like oh,
+was this a stupid email? But I think actually we
+are in a company where it's cool to do this. And Demis and Sergey
+were following a little bit what was happening
+during this competition. So yeah. A little bit later in
+the day, actually, we receive another mail and
+it's a full proof of P2. So now there is
+nothing to argue about. Perfect proof solved AlphaProof,
+and a little bit later in the day, actually,
+on that same day we also received a full proof of P1. So in conclusion, final results. P1, P2, and P6 were fully
+solved by AlphaProof, and P4 was fully solved
+by AlphaGeometry. And we actually try
+to keep running over the weekend in the hope of
+getting one point on P3, because actually the agent
+made some progress on it, but it turned out that it was
+not enough for a partial point. So we reached the score
+of a silver medalist and missed the gold
+threshold by one point. Of course, I just want to
+reiterate that we definitely use more time and
+more compute than was available to the
+human participant. I want to come back a little
+bit on this P6 problem, because it turned out that it
+was arguably one of the hardest problems in the last
+years at the IMO. Only five out of 609
+of the participants solved this problem fully. And it's the top-six
+people of every country who comes in and only five in
+total solve the problem fully. And Sir Timothy Gowers, who is
+Fields medalist and IMO gold medalist as well,
+he said that he actually spent a couple
+of hours on this problem and did not solve it. And I find the fact that
+the program can come up with a somewhat complicated
+construction like this very impressive. So in no way am I saying that
+we are close to Tim Gowers math abilities. And he may not have spent
+these two hours really trying to solve this,
+and these things-- these are-- you need to
+practice to solve these things. And so in no way am
+I saying that we are close to Fields Medal level. But I think we all
+interpreted this as a really, really
+encouraging sign for the future to be able to do something
+really non-trivial. And let me conclude
+this IMO part with some of the challenges we observed. The first is the
+gaps in Mathlib. And so the most blatant
+one is geometry, actually. If AlphaGeometry
+was not there, you may have required us to
+actually completely write that part in Mathlib so that we
+could do the geometry problems, or we may have decided not even
+to try the geometry problem. And also, I want to
+say that even in P1, we observed that actually
+there were some gaps in Mathlib that we suffered from. And so in one of
+the proofs where you have to prove that it's
+either rational or irrational, Alpha Proof hadproved
+the rational part and was struggling on
+the irrational part. And so this is not
+definitive, but, in fact, we observed that the
+natural way to prove this would be to use a certain
+theorem that turned out to not exist in Mathlib. So this is not an excuse. AlphaProof could
+have conjectured that theorem, proved it in line
+and use it to finish that proof. But it turned out that
+problem was more difficult than it needed to be. Now, combinatorics problems
+were also very difficult. Just P5 was extremely
+hard to formalize. A lot of-- the necessary API to
+represent those problems about actually ironically about agents
+environments and strategies is not present in
+Mathlib and that was-- made that problem very
+hard to formalize. And the reality is that even
+when we had formalize it, we did not manage to make
+progress on P3 and P5. So combinatorics were
+difficult for AlphaGo. And of course, we use
+many orders of magnitude more compute than
+human contestants. In some way. I think, we actually
+successfully landed on the moon. I think that is actually
+the important part. And we will want to be more
+efficient for the next trip. All right. So now let me go
+into the methods. And before we get there,
+I want to remind you that, when we're talking
+about the methods, there are two important aspects
+we needed to think about. One is where do the
+problems come from and how are we going
+to have an agent that learns to solve those problems? So we trained several models. One model is a formalized model. So it takes as an
+input a problem described in natural language
+in output a Lean formalization. So this is based
+on the idea that we are going to lean onto
+human-defined problems instead of inventing
+our own problems, and we are going to
+try to translate them in Lean, because they all
+exist in natural language, but they don't exist in it. So we're going to
+try to do that-- trying to do that with
+humans don't scale at all, takes a long time. And so instead, we want to
+try to train a model that can do this automatically. That's the formalized model. And now we also
+have a proven model. So the architecture of a proven
+model is that it takes this-- if you remember in
+my demonstration before this yellow
+box, the Tactic state, the Lean state that tells
+you, what do you know now? What do you need to prove? This is the thing we're
+going to send as an input to the proven model. And then the proven model is
+going to sample n continuation for the proof. This n-thing you might consider
+potentially part of the proof-- an alternatives. And then you take
+this proven model and you put it in
+the AlphaZero search. So you're going to search over
+actions which are basically one line in the proof. Each time you add one
+line in the proof, you send that to Lean. And Lean tells you,
+oh, what do I know now? What do I need to prove now? And that's basically
+how the search works. If you know a little bit about
+AlphaZero and MCTS like search, they try to exploit what
+the networks tell you-- the neural networks tell you. They exploit the high-prior
+and high-value paths. But it has a mechanism also
+to explore low-visited paths. So, for instance, that's how
+Move 37 in AlphaGo is discovered is because it might
+have a low prior, it might not be considered
+the right move by the network. But it was still going to
+try to visit it in case, it might be an interesting move. So now let me put this thing
+together in the pipeline. Step 1, we do auto
+formalization. So we train a formalization
+model and auto formalize human creative problems. So this is really the
+answer to the question, where the problems come from
+around human mathematics. And here I want to highlight
+a few advantages of using formalization of the problem. First is that when you send
+a problem to Lean and Lean says this is a valid
+syntax, it means that your question makes sense. And it's not something
+that doesn't make sense. So it's either true or false. You're generating something
+that is either true or false. OK, the problems might
+not be interesting. They might be trivially
+true or trivially false. But they are either
+true or false. And so one way to
+see this is you have the human
+problem in the middle And you try to generate
+Lean variants of it. If your model is
+really good, then you will do the perfect translation. But maybe also it
+will generate problems that look like that problem. And so when we have this
+formalization model, the way we use it
+is that we were able to gather about a
+million informal problems. So there is a lot
+of problems to train for the IMO, about
+a million of them. We pass them through
+our formalized model and we generate roughly
+for every problem described in natural language, we
+generated roughly 100 possible translation for it. And now we've just
+created a huge database of formal problems. Now, we need to have-- we need to train the prover
+to be good at proving. And so that's why
+you don't really want to be completely in
+the AlphaZero philosophy, where you really
+start from scratch. Here, you want to
+be pragmatic and you want to start with
+something that is already can do a few things. So you take a pretrained model. In our case, it was
+pretrained on a lot of code. And then the next step is you're
+going to train the approval model supervisor Mathlib. The Mathlib has about 100,000
+definitions, 200,000 theorems, 300,000 lines of proof. And basically, you are really
+going to do supervised. So, you are going to
+place yourself inside of a human proof. You're going to look at what
+is the mean state there. Then you're going to look
+at what the human said was the next step in the
+proof, and you're going to train the model towards it. So in some sense, very similar
+to regular pretraining but you get much more
+information from it. And so when you've done
+that, your proven model has learned a really good
+prior over the actions to take. And unfortunately,
+Mathlib is about, I don't know, but especially
+if you want to do the IMO, Mathlib doesn't contain
+much IMO problems. It's all about research math. And so if you take
+that proven model and you try to apply it on the
+IMO, you get around 0% of rate on the end. I'm not going to say 0%. I actually am not sure,
+but really close to 0%. And so that's why
+you start to have to discover new knowledge about
+how to solve those IMO problems. And so that's where you enter
+the next stage of the AlphaZero reinforcement learning stage. And so you are going to
+train the proven model by RL. And the recipe is very simple. It's RL recipe. And for each form
+of problem, you are going to generate experience
+or either proving or disproving that problem by
+searching over steps. And once you've come up with
+what you think is a proof, you're going to use Lean
+to verify the proofs. Lean is going to say,
+this is not a proof. This is a proof. And for the things
+that are proof, you are going to reinforce your
+proven network on those proofs. And so what happens is
+that, at the very beginning, the proof model is able to prove
+the very-- the easiest problems, really, really easy
+problems is going to learn from that experience
+and climb the next rung on the ladder that leads all
+the way to IMO strengths, right? It's going to be able
+to then solve a few more problems a bit harder. And by learning from
+those, it will go and get better and better and better
+and all the way to the IMO And. So for this stage, we decided
+to do a really the AlphaZero pipeline, because what we wanted
+to see is that, of course, we want to solve the IMO,
+but we want to do it in a way that we think will generalize
+way beyond the IMO. So our real goal is to do
+real mathematics is not to stop at the IMO. So we want to have a method
+that is not tuned to the IMO, and we want to have a method
+that can discover new knowledge. And so all these proving
+strategies for the IMO, this is completely discovered
+by the model by itself. So that's step 3. And then final step is this
+thing called test-time RL. And so to give you a bit of
+context, as I alluded before, even for Po-Shen Loh, the USA
+coach, or Tim Gowers or Terry Tao, the problems at
+the IMO are not obvious. So even if you have a Fields
+Medal level neural network of mathematical intuition, you
+cannot really solve those IMO problems instantly. But then-- even for them,
+it takes hours to solve. And why is that? It's because, those problems
+have been designed this way and you really want to learn
+something about those problems. So it's almost a real
+scientific experiment. You first need to
+think of experiments. In this case, it's like
+what could be true, what could be false? And then you need to
+run the experiments try to proves or
+disproves those problems and learn from this
+experience to learn about that particular problem. And the way we did it
+is that, AlphaProof is going to generate variants of
+the problem we are caring about. So in this case, we have
+these six problems at the IMO. These are the problems
+we care about. Can we generate variants
+of those problems and basically then run RL
+exactly as in the previous step to try to discover knowledge,
+especially about those problems? So I'll try to illustrate this
+in some hyperplane, where you have the agent and the problem. And so yeah, try to
+imagine this a little bit. So on the bottom left, basically
+you have a bubble of problems that the agent can
+already solve easily. And so it's a
+generous checkpoint. Every little black dots here
+represent kind of a problem that the agent already
+knows how to do. And then very far
+on the top right, you have this very hard
+problem that you want to solve. So imagine maybe it's the
+P6 problem [INAUDIBLE]. And so as I described, the
+first thing we did was we generated variants
+of that thing. So we basically
+explored that problem into many, many variants. And if you are
+doing this well, you may hope that it will generate
+one variant that is actually already solvable by the agent. And so you solve that one
+and you learn from that proof exactly like before. And you learned a little
+bit about that problem. And then you repeat
+that process. You repeat that process. You learn about that
+problem until you reach-- you reach that problem
+and you can solve it. And so that's how actually
+P1 and P2 and P6, all of them require test-time
+RL to be solved. So I want to finish this
+section with some challenges for AlphaProof. So we inherit some challenges
+from formal mathematics. As I said, most of human
+data is in natural language. But we started to
+have a good handle on how to translate
+that human data so that we could learn about it. And so there's still
+a big challenge, especially as we move forward. But maybe we have some handle
+on maybe something that is a bit harder is that we cannot easily
+learn and work on areas that are not supported by Mathlib. So for instance, like
+in the geometric case, where if you have
+nothing about it, right, you can't even express
+the geometric problems that humans have come up with. And so that's a real
+challenge to think about. And so this could
+be solved if you start to understand how to do
+creative building of new objects and theories. You understand interestingness
+and beauty in mathematics. But this is definitely a really
+cool challenge for future work. Cool. So what's next for AlphaProof? And as I said, from
+the very beginning, actually, of the
+AlphaProof project, the idea was to try to see if
+we could learn about mathematics and potentially go
+beyond human mathematics. The IMO was really,
+really cool milestone that I think was extremely
+correlated with that goal. But that's not where
+we want to stop. So obviously, what
+we want to do is we want to broaden to the
+entire mathematical landscape. We don't want to be stuck
+as high-school mathematics. And we want in the future
+to be able to contribute to the frontiers of
+research math and going back to the understanding that the
+Greeks got 2,500 years ago of the importance of proof. It would be fantastic if we
+could democratize-- democratize this idea of a proof and
+share that with every thinker from an elite mathematician
+to any other person. And so can we have AlphaProof as
+a useful tool for every thinker? And I want to conclude by saying
+that the big ideas they are really important, but equally
+important, if not more, is the people who
+are doing this with and the mindset that
+everyone has on the team. And I was pleasantly surprised
+to hear that, in mathematics as well, you need to be
+really optimistic, otherwise you will never
+be able to prove anything. I think this is also true
+in AI and machine learning. It needs to be absurdly
+optimistic to be able to achieve absurd goals. And really, individually
+this was almost impossible. But we had this belief
+that together it was impossible to fail. And so these were
+the team members that contributed to
+this amazing project. And yeah, let me conclude that
+and thank you for listening.

@@ -1,0 +1,866 @@
+CAIMING XIONG: Hello, everyone. I'm Caiming Xiong. I'm very glad to get the invite
+to present this multimodal agent areas. I saw you already listened
+the exact same area as multimodal agent last week. Hopefully, I would bring
+something new in this direction. So first I want to show
+this plot to everyone. So you can see how crazy it is. In the past five years,
+almost all the benchmarks get saturated. And now, we have
+the last one, which is the one proposed this
+year, the humans last exam. Seems like when we solve
+this one, we solved AGI. I'm not sure whether we
+can solve it this year, but I believe we'll have a much
+better result for this data set with benchmarks by
+the end of this year. OK, since we have so powerful
+Frontier Foundation models, then what we should
+do on those models? How we could leverage them
+to make our world make the society better? I think the answer is agent. We believe the multimodal AI
+agent is the next generation of applications. Why? It's because we want agents,
+not just reading text. We want the agent who can
+hear, can see, can speak, can feel even. And we want agents that to
+process a task like a human, because most of the tasks
+that when we do in computer, they involve multiple
+apps interfaces. So powered with the
+new advanced language model or the large foundation
+model, which is vision language action models, it could make
+the digital interactions more accessible, more
+automated, and increase the human's productivity. So what are the status of
+the multimodal agent now? How far it is? Actually it's not far away. We already see a lot of
+the multimodal agents being used in a real world. Or some of them is used in real
+world, I would say some of them in the research. Like for example,
+a coding agent. I think some of you,
+maybe a lot of you, are using the coding
+assistant or agent products like the
+cursor, Replit, or Darwin in your daily work or research. And those agents, if not only,
+that can accept the code text, it also can let you
+to upload the images. And they could to
+generate the code or fix your bug through
+the images you send. Web agents-- the
+web agents is it's also a multimodal agent that
+the agent could help you, or could automate some control
+in your browser or apps. Same as the mobile agents
+and the even physical agent. Super amazing, right? So this is a robot called
+Helix from figure AI. Not just you interact
+with a single robot. Even if that robot and
+robot collaborate together through the powerful
+this foundation models. So all those agents, some of
+them in production, some of them is still in research. Some of is a demo stage. And I believe we
+are going to have more and more this
+type of applied use cases of multimodal agents. So the question is,
+how are we going to develop them, and what are
+the challenges for developing those multimodal
+agents, and what is the important component
+what we should focus on? So this is today's agenda. I will talk about the multimodal
+agents from these three areas. First is development benchmark. We need an interactive
+environment. We need this environment can be
+more reconfigurable, expandable, not just static benchmarks
+for multimodal agents. We need the data. How we get the data to
+train our multimodal agents? The third one is what
+model we should build on? We interact with
+computers every day and use that to perform
+a lot of different tasks, including web browsing,
+editing some personal videos, managing our files,
+doing some analyzes, or doing coding to implement
+some software softwares. It's not just for those tasks. It's not just to interact
+with a single app. It is a workflow that will
+involve multiple applications through a GUI or CLI. And with multiple
+multimodal agents, it could have a
+big potential that can help us to revolutionize
+this interaction between us and this computer environment. The agents can follow our
+high level natural language instruction and to automatically
+to do those interactions. For example, in this
+image, in this slide, there is a task called
+the update the bookkeeping sheet with my
+recent transactions over the past few days
+in the provided folder. It is a very boring task. For this type of
+task, I think everyone would like to have an agent to
+help them process those tasks if they are available. However, how can you
+trust those agents? We need to have a benchmark. So currently, there
+is a major challenge in developing those
+multimodal agents. But we don't have
+a benchmark that depends on the real
+interactive environment, that this environment can cover
+the more diverse and complex, the real world, the
+computer use the scenarios, and also can support the
+different operating system interfaces apps. So with this type of benchmark,
+after the agent passed that benchmark, we can chart. We can trust this agent
+for our daily use. So currently, we have
+some that already have some good benchmarks,
+but they are not have these properties
+that I just mentioned. Like, the Mind2Web. The Mind2Web is a
+real good benchmark. They include a lot
+of the real testing. However, for each
+test in the Mind2Web, it has only single
+demonstrations without the executable
+environment. So the assumption from the
+Mind2Web is, for each task there is only a single solution,
+which is not true 100%. And with that
+benchmark, it would paralyze some alternative
+correct solution. The WebArena is
+another good benchmark. It is an executable environment. However, it simplified the
+observations and action space that it only
+covers very limited, the task and the
+applications or domains like it only covered web
+navigation on a few websites in domains. So in that one is restrict
+the testing the use cases for the agents, and also it
+cannot use to evaluate some open manned tasks in a complex
+real world scenarios. Not maybe they require
+some tasks, require the navigating between the
+multiple different applications and interfaces in
+the open domain. To address this gap between the
+development, the real world use case and the model development,
+the simulation environment, we introduce the OSWorld. This is the first the
+scalable and the real computer environment for development
+and the benchmarking of multimodal agents. Why? I would say, it is a real
+computer environments. And it could be used
+for the both development and the benchmarking of
+multimodal agents as well as the OSWorld for the first. This development allows the
+free from the keyboard, mouse control of the real
+computer applications. And it's not they fixed
+the evaluation set. You could to config your
+tasks and execute those tasks through this interactive way. So this one, then you
+can use the OSWorld to evaluate some
+open-ended computer tasks and with the arbitrary
+applications. So it's not fixed. Maybe you can do, ranging
+from different use case like a software development
+use case or the image editing use case. But also, it can serve
+as a unified, real world, real computer environment
+that allows the users-- so in this way, it can allow
+users to define a new agent task without to build this
+new domain specific simulation environment. So it's either environment, the
+Earth world is more flexible and give the users more control
+for the environment design for the scenarios they can use. So let's see how are we going
+to use the OSWorld to create the different task. The first for each task, you
+have a natural language task instruction for the task. So you see here you have a task. You want to create this testing
+environment like updating-- I just mentioned this task--
+updating is bookkeeping sheet. And with this,
+then in the OSWorld they provide the initial state
+setup for this instruction. So the setup-- it's a you
+just need to create this file. In this file, they include
+multiple components. The red part is you need to
+config the initial tasks are like this Excel files tasks. And also you need to add
+what is your post-processing and those configurations. And also, where you can retrieve
+the files and the information. And the yellow part
+and the last one is how you're going to
+evaluate after you finish the task in the environment. After you configure
+your initial state-- the setup-- those words, they
+will initialize this environment with a virtual machine. And in the virtual machine
+they will initialize though the
+initialization, will start to run in this virtual machine,
+and you get the initial states of the test environment. That's very convenient. So for example, at
+this moment, you could use this virtual
+machine to restore the task again and again, just
+to reuse this virtual machine. But because of we use
+this virtual machine, so it's a safe,
+isolated environment. We don't need to worry
+about some damage in irreversible damages
+when you do testing. So when the task
+environment gets set up then you can start to run
+your agent to interact with this environment. For example, you
+can use GPT 4 way to create an agent and
+interact with its environment. Or you can use any
+other open-source model to build an agent. The agent will
+receive or observe different information that can
+be provided by the environment. First, of course, is the user
+query, the natural language instruction from the user. And also, it can
+receive the observations from the environment,
+such as the screenshot, the accessibility tree, and
+some customized streams, maybe the terminal outputs. So here is an example, the left
+side is called a set of mask, which is a screenshot
+plus some x plus-- the information you extract
+from accessibility tree that you can add those
+label like in the image, so they can provide more
+information or just screenshot. And also the right
+side is the dormitory. It is accessibility tree,
+but for website it's a DOM 3. So after the agent receive
+those observations, of course, it's not like every agent
+need all the observations. It depends on your agent. If you are vision based
+agent, maybe you only use the screenshot or SOM. If it is a text-based
+agent, maybe you are only use accessibility tree. It depends on what agent you're
+going to build or to interact with the environment. So after you receive those
+observations, the agent will-- it depends on how
+you create agent-- but the agent finally will
+generate some actual executable actions, like you
+click some position or you will drag some
+content, drag some box, et cetera, to manipulate
+the keyboard and mouse. And then, each of
+those actions will be represented
+using a code string and generated by the agent. And then the simulator will
+execute those the code strings in the virtual machine and you
+will get the new observations now. The odds were that, we are
+using the pi auto GI3 to control the mouse and keyboard. This is where we
+used the library. So this interaction
+loop will continue based on your instruction. We will repeat multiple
+steps, and here it terminated. Maybe it's done
+or failed or it's reached the maximum
+number of steps you set. In our experiment,
+we set is 15 and 50. So now you can setup the
+task until you run your task. And then after the task you
+stop, you get the results. Then you will do evaluation
+on your task in this OSWorld. OSWorld is different
+from other benchmarks. We implement this execution
+based on the reward function. So when the final step
+reach the goal, of course, they will get a positive reward. Or even if partially
+achieved, we will get some number
+between 0 and 1. If not, it's totally failed. It will get 0. To get this reward,
+we are not just use the single
+evaluation metric. So here to evaluate the
+successful execution of those tasks, we thinking
+there is no single way to evaluate the success
+or failure for the task. So we make this
+evaluation more open. So what is open? So open means that you can
+construct the evaluation script by yourself. That's really relevant
+because some tasks you need to retrieval, some
+tasks you need to matching to evaluate your task. So we use this example
+wise, the evaluation, to design the evaluation
+metric for the tasks. So not just the fixed one. So it's an open one that you
+can base on different tasks to design your different
+evaluation metrics, so that you can facilitate
+the diversity of the tasks and could make the
+evaluation more reliable, especially for this complex,
+real world open-ended tasks. So we created this a
+powerful OSWorld Environment, so that the people can use
+this environment to benchmark in their multimodal agents. But besides, we built this
+environment, of course, we also built a benchmark
+on top of the OSWorld. Here we introduce the
+369 real-world computer tasks that involve widely
+used the web or desktop apps like the AllFace,
+OS, and daily use workflow and the
+professionals, all of them. Each task, we did a lot
+of search on the internet. So all of them is based on
+the real world computer use cases, the experience. And we ask the people who
+have the CSS background to interact with the initialize
+the environment in OSWorld and interact with
+the environment. And we call those
+the trajectories. And also handcrafted a lot of
+the execution-based evaluation scripts to verify
+the task completion. So in the left side, you
+can see the distribution of the different tasks. So total we have 369, and
+one hundred is a workflow task, which is multi
+app means this task need to jump across multiple apps. And they have the 268, which
+is roughly 70% is a single app. And in those tasks, some of
+them, which is roughly 20% is through the other
+data set like WebArena. Other data special
+here is we also add the 30 tasks,
+which is infeasible because agent should also know
+how to say no to the user. So we think adding
+the infeasible task is important to make it more
+comprehensive for the scenarios testing. And we also have a small number
+of 43 tasks for Windows, not just on Ubuntu. And as I said, because we
+think in this example based on the evaluation
+script, it's very important for the real world
+evaluation on multimodal agents. We construct the 134
+evaluation script on 369 example, the samples. So you can see the
+ratio is very big. So here is some examples
+we sampled from our 300 sets of our benchmark. So you can see they
+are very diverse. The apps and the cost
+different the user intents. So we compared our benchmark
+with the current existing popular benchmarks from
+the different perspective, such as whether it provides
+the controllable executable environment or whether it's easy
+to scale to the new environment, or it can support
+the multimodal, or whether it could be the
+cross app task, or a value equal to the start task from the
+intermediate, the initial state, and so on. So we can see our benchmark
+is to have more powerful-- I mean, recover
+different the scenarios, the request as a benchmark
+for the multi-modal agents. In right side, we also
+did some analysis, how complicated the task
+in the OSWorld benchmark. We did some comparison
+with the WebArena. So the blue is WebArena and
+the yellow is the OSWorld. The median completion time for
+WebArena is roughly 30-40s. And for OSWorld, the median
+completion time is roughly 100, maybe 110 seconds. And they also have some
+significant number of examples, maybe need even more. You will need 900
+seconds or even more. So it means that the complexity
+of the expansion market is also higher than the
+existing benchmarks. After we create the benchmark,
+we test the benchmark with the state of the art, the
+LLM, or VLM from the open-source and also closed-source
+foundation models, like GPT 4, Gemini, cloud, et cetera. And the left side is
+the prompt we used. We designed four
+different testing settings based on different observation. The one is only
+half accessibility, which could be the MM
+can directly to write. And the second one is
+a online screenshot, which is pure vision. And the third one is the
+screenshot plus accessibility. And the fourth one
+is a set of mocks. We did some simplification
+on accessibility because usually
+accessibility is very long and include a lot of
+redundant information. So we did some
+simplification to reduce them to shorten the length
+of this text representation. So this is the result-- the numbers we get. Let's do some explanation
+some analysis on this table. So first, let's see, at
+the bottom of this table is the human performance. Roughly, 70% to
+75% success rate. And if you go to see the
+performance of the state of art open-source and the frontier
+closed-source model, it's still far behind-- far from the real human
+performance on those daily use tasks. It's not like a super hard task. It's a daily use tasks. And second, you see
+a form different than the other scenarios. Human performance
+is kind of stable and it's a plus/minus
+that 3% to 5%. But for those frontier models,
+that's large foundation models, the performance
+change dramatically. And even the model from
+same company, for example. in a set of mock, the
+GPT 4V and GPT 4o, the performance gap is huge. It's 10% in gap,
+given the performance, since the performance
+only just 20% or 10% cap. So this table's result,
+we get last year. And this year they
+have new models from those vendors, the
+OpenAI and Anthropic. They have some big
+improvement on there. But still, it's far away
+from the human performance. We'll see. We did some analysis
+on what factors that influence this the performance. So first, we did some analysis
+on the screenshot resolution. So in the y-axis
+is a success rate. And the x-axis is the
+downsampling rate. So because of BRM, most of them
+is still very small resolution. Not very small, but
+it's comparing now, we have better resolution,
+but usually the way I'm not trained at
+the full resolution is trained on a smaller one. So we do some downsampling
+on the resolution and then we calculate,
+then we run a evaluation. In the GPT 4 way screenshot,
+as you improve the screenshot, it will get a
+better performance. But in the SOM, I think
+the trend still is improve. But still, this is a noise here. But it's still improved not
+as clear as the screenshot. I think it's because SOM encoder
+have some extra information, it gets from the
+accessibility tree, based on some text
+information inside. So it decreases the
+impact of the resolution. And then, we're also doing
+some analysis on how much the historic context will
+influence the final performance. So we choose different number
+of the trajectory length. We found in the GPT
+4, SOM is improved as you add more and more
+the historical information, the Stats. But in the screenshot
+one, it doesn't. It even make it worse. We think maybe it's because
+the SOM have-- like I said, it includes both the information
+from the text, representation, and accessibility. And our aim with the
+current foundation model is perform better on the text
+rather than the original image. So we think that is the reason
+it's getting better and better with more and more context. But for the screenshot
+is getting worse. I think it still is because all
+the column the foundation model is not be well trained for
+the computer use scenarios. So it means it still have a gap. The open-source community or
+the closed-source companies need to improve the vision
+capabilities in the foundation model if we want to get a better
+multimodal agent for computer use. And in the right side,
+it's a dense distribution of the accessibility tree. So although you can
+add more and more nodes text representation
+in the multimodal agent and it can get
+better performance. But they all have the issue
+that the accessibility tree is super long. So roughly, it's at the 90%
+percentile, it's the 6k. So if we want to add more
+of the history context, then we need to find a way
+to get the more simplified or to call it more concise
+accessibility tree. So maybe they have
+some work on how to select the
+relevant information in the accessibility tree
+before you fit into the system. But when you do this
+step, maybe your system will be slow because you need
+this information to maybe you need to train another big
+model to do this information processing on that added
+the extra latency there. And we also analyze
+the model performance on the Ubuntu and the Windows. We found that their
+correlation is pretty high 0.7. So which means we could
+use the OSWorld framework. It will be effective. If you can test your
+model in one scenario, it should be
+effectively transferred to another environment. And we also did some ablation. Like, if when we
+change the polarization size of the windows in a
+different app, in the screen, the results also
+show very different, which means that the
+foundation model is not very robust for this
+type of the disturbance. So through this we can
+find a lot of theories that have a lot of work
+we need to improve. And a good news
+is, recently they have a lot of new
+progress in these areas. Anthropic-- they have this new
+cloud 3.5 and also the 3.7. And we can see the very
+significant improvement from here 14%, 15% to 22%. But still far away
+from human 72%. Of course, if you increase the
+number of steps from 15 to 50, it's getting better. But it'll still have a big gap. And the OpenAI also
+have this new model called operator, the COD. And in their recent
+performance, we can see OpenAI is significantly
+better than the cloud 3.5. And at the 200 step,
+they can get even a 38%, of comparing with, maybe
+only have 15% four months ago. So it's improved super fast. But if you have 200 steps, most
+of the task in the OSWorld, can be solved on the
+15 or even 20 steps. So which means they still
+have a big improvement, but they have big space to
+improve the multimodal agent for this computer use. So this is through
+the environment and the benchmark discussion. We have made a lot
+of great progress on this computer use areas
+for multimodal agent. But still, they have a lot of
+the stuff we need to improve. They still have a lot
+of opportunities there. Now, after this, let's
+go to the data part, since we still need the
+data to train our model. To follow agent
+training, I think we have a bigger challenge
+than we do in the training. Why? because the agent model
+is not a single step. It's a multi-step. It's a trajectory. Collecting the trajectory
+data is super expensive. And the second
+is, it's very hard directly to get the trajectory
+data by crawling the internet. And second, even you say
+you have enough money, I can just to hire
+people to collect data. But to do those annotation
+to calculate trajectory data, it's very time consuming and
+it limits the scalability. Not good for the scaling law. The cost and the time consuming
+of the data collection through human, and also there's
+no free large scale trajectory purpose you can crawl. Then what should we do? Why don't we like the model? So here I want to
+discuss this paper called The Agenttrek, which is
+to synthesize the agent trajectories through
+this guiding play way. A strategy with a web tutorial. So what does it mean? So first, we know they
+have a large collection of tutorial like
+text in the internet. And those text, they
+provide the step by step guidance on how to
+perform different tasks. So we read those
+tutorials to learn how to interact
+with different apps and complete different tasks
+in our GUI environments. And then, those tutorials, they
+cover different the scenarios. So we could systematically
+do filtering or filtering those instruction contents
+from the internet. And of course, those
+data is not that clean because it's written for human. So they have a lot of
+noise, text, descriptions, and of course,
+HTML formats there. So we need to extract the
+valuable knowledges, the steps from those tutorial
+like text and then transform those unstructured
+text into a structured agent trajectories with the
+definition or high level description of the task that
+make it to allow the agent to use, to train, and mimic
+the human task completion. So in the agent trick, they have
+the three stages to do this. The first stage is called the
+automatic tutorial collection from the internet. So in this step, I just
+roughly described these tracks and the filter loads tutorial
+data from the internet. You've seen a bunch of heuristic
+filtering and some classifier, like with the fasttext,
+and then transform it into some structured
+format with using ARM. And the step two is the guided
+replay for those trajectory generation, which is using VLM,
+vision language model agent, to execute those tutorials based
+on this structured tutorial-- the structure steps-- and run it step by step. And through that we were
+to collect the high level trajectories, including the high
+level description of the task, the observation of each step,
+and the reasoning of each step and the final actions. And then, given those data, we
+will run a separate evaluator to evaluate to assess the
+quality of the trajectory to filter out some bad
+trajectories or low quality ones to maintain to ensure
+this the effectiveness of this data for the trainees. And the step three is we need to
+verify those agents by training a model and fine tune
+for the agent models to demonstrate the improvements
+and the significant performance improvement across
+different benchmarks. So that is roughly a step for
+three stages for the agent trick. So let me describe
+these three steps. Let's go a little bit
+deeper about each step. The first step is that
+it's a tutorial collection from internet. So we start from some the large
+corpus like a Pajama, DCM. Then we did using
+some filtering with based on keywords or
+some structural features. And after this step, we
+filter maybe 99% of data. And then, for the
+remaining data, we extract a subset of
+the remaining data-- the filtered data-- and use
+the LLM to do some annotation. And it is a good data is
+a bad data as a tutorial. And then after this annotation,
+we trained a fasttext classifier and use that one to classify
+all the filter data. And when you get the tutorial
+data, we run another round of M to paraphrase those data to
+follow some predefined format that used for the guided or
+guided plan for the stage Ii. So this is the. This is the data flow
+for the step one, when you do the preparatory. So you can see we use
+some the heuristic filters to do the first step. The data filtering. And you can see that just after
+this 1, 2, 3-- the sixth step, it will filter out
+more than 99.9% data. And after you get
+this filtered data, we select a small
+number of the data and use the prompt
+ARM to classify it as a DIY tutorial or not. So this is the prompt we use. After we do that, we also have
+the human to sample some of them to verify. We find that the F1
+score is pretty high. It's like eight. They can get roughly
+88%, 89% And we find, for some long
+text or the documents, the M is performed
+better than the human when they embed the tutorial
+in the long context, which is the normal,
+which is not surprise. So initially, we
+watch after the LLM on the long text classification. Then after we filter
+those tutorial data, then we formalize
+the tutorial data into a specific
+structured format that we want to use for the
+model, for the guided replay. Here, we are organized. So the left side is the prompt. We used the goal. So we want to act
+through this prompt. We want to convert the
+tutorial into five parts. First is the platform and
+the target environment that specify what
+is the operating system, what software versions. So that will be used
+for the initial state. And second one is
+the task description to provide concise
+problem statement, which is the instruction. The third one is
+the prerequisites, which requires the dependencies,
+background knowledges. And fourth one is this
+step by step instructions, which include this reasoning
+guidance and the command syntax. And the last one is
+the expected outcome, which is used for the
+verification or success indicators. So after we get this, after
+we paraphrase the tutorial, then we get this
+structured tutorial. And then, we create a VM
+agent and fit into this step by step tutorial. And the agent will start
+to run the interact with the environment step by
+step through this observation action loop. And after the
+whole execution, we will recorded all the
+observation, action, intermediate reasoning,
+and the whole trajectories. And then, those will fit
+into another VM evaluator to assess the quality or
+correctness of the trajectory and ensure we got a
+high quality data. So here is an example of the
+final version of the data after you doing all those steps. So you could see the left side
+is the observation sequence, and right side including
+the action, the source, for each step and the
+action code for each step. So comparing the data we
+collect using the agent trick with the prior
+works, the parallels, the data set people
+use to trained model. First, our data could
+be that the agent can collect much more data. Here we showed this 10k. 10k is not the a maximum. We just do some of them. It could be much bigger. And the second, complexity
+of the data is not low. Actually, it's pretty good. The average step is 12 steps. And you also will have a
+lot of the information. You will have HTML. You will have accessibility. You also will have
+reasoning your support. You could get videos,
+you can get screenshots, and you can cover
+different websites. So the Agenttrek
+trick is to maintain the diversity and the realism
+because it's from real world. And it's also adjusting
+the scalability issues that the human annotated data
+may have given the budget. So here is the distribution
+of the trajectories. The left side is the different
+number of trajectories from different websites. And the right side is
+from the high level different vertical,
+different domains, what's the distribution in the data. So you can see how the
+coverage of the data set, the domains through
+in the Agenttrek. I mean to say that the data
+set created by the agency. Like we said, we
+fine tune the model to track the performance to see
+how good this synthesized data comparing with other
+human annotated data in the benchmarks, to train
+the agent in the benchmarks. So we did it on this comparison
+on the WebArena data set benchmark. And the models trained on
+Agenttrek data significantly outperform both, I think,
+open-source and even close-source GPT 4o
+models, which demonstrate the synthesized trajectories. It's also high
+quality and it also can use to train
+the better model. This is about how we do use
+the Agenttrek to do the data synthesis for the GUI agent. I think I'll take away
+from this Agenttrek work. It's leveraging the
+internet corpus, is still an important way
+because they have a diverse task resources. And the second is, with the
+reasoning and the reflection, it's very important-- the factor for the trajectory
+which we will talk about in the model side later. But however, they still
+have an issue here, because for each
+instruction, you still only get a single
+trajectory, which is an issue that, not like you
+only have a single solution for each query. It could have
+multiple instruction. So you still have
+this issue here, because it's only the
+imitation learning process. But I think we have the solution
+for it because it always work. So you can use Agenttrek to
+create a data for SFT training. And then you can use the
+high level instruction and run it in the OSWorld for
+the second stage the I/O train. And then, you can solve this
+exploitation exploration process. So we try to answer the question
+like we can use the data synthesis to make the existing
+real vision language model, we perform better on
+the GUI agent tasks. So the next I want
+to discuss is, when you do data synthesis
+to improve this action core capability for agent
+of work external task? How about it could also
+help for the task itself, like understanding? We know the vision
+language model is trained for the understanding. And if we want to do it,
+can we crawl from web data? It's a website that
+have this type of data. I think the answer
+is, not really. Then how can we synthesize? So first let me see
+why we need to do it? Why we want to
+synthesize this type of action data for
+multimodal LLM to understand? The understanding should be
+the capability or skills. It should have. But actually, it's not perfect,
+or it's far from perfect on the open-source model. So here is the four
+examples from the four different perspectives
+to explain why we need the model, who itself
+can do the action calling to improve understanding. All those tasks, either they
+need more fine grained vision capability, or they need
+some reasoning capabilities, or they need some
+external knowledge. So here we introduce a TACO,
+which is through synthesize this Chain-of-Thought-and-Action
+data to improve the multimodal understanding capability through
+adding this action calling capabilities,
+skills in the model. So this is some
+examples, we showed after adding this action
+calling capability which is trained through the synthetic
+data we will discuss later. It can generate the
+thoughts and the actions through the observations. They will do again until
+they get the results. So this is the one
+example we just showed, it failed in this model. And this another one is
+called the localization and the functions, which
+are visual functions. And this is to query the
+external knowledge, the text knowledge, the knowledge
+observation model only. And this makes the region OCR
+and calculate the capabilities. So let's go back, how we
+create the synthetic pipeline to generate this
+data for the CoTA? There is a lot of details
+here but don't worry. I'll explain them one by one. It's not that complicated. So first, for this data
+synthesis pipeline, they have two parts. First part is called the
+model based generation. And the bottom part is the
+programmatic generation. So in a model based
+generation, first we take the existing the image QA. We get those image and
+the QA pairs as input, and we prompt the
+frontier models. Let's say, you have this
+image and the QA pair that generate the train
+of thought and action. Given those action or
+called action list, or train of thought
+if they do not have the relevant action
+in the list, other then it will generate. Now, after the generate below
+the train of thought with action or thought without
+action, then we will verify the
+outcome, the output. If it is correct,
+then we will pass it. If it's not, then we
+will convert this pair as the direct answer pairs. So in this way, you
+will get the data. Not all of them have the action. Some of them have action. Some of them only have train
+of thought, some of them without this direct answer. So that is this
+part-- the top part. And then the bottom part, we do
+the programatical generation. This way, we do not
+have the QA pairs in this programmatic
+generation process. So we only have the image. Then we use the model without
+maybe the detection model, depth model, OCR model,
+and different models. And also, it could be human
+to label some data, some box. And we get those dense
+annotations in the image. And we design some
+manual templates. And they use that to
+generate the QA pairs. And through that one
+we can synthesize what actions in the formula
+answer to question to answer. So this is the
+template we use to do the programmatic generation. So some of them is
+about the content. Some of them is about the 2D
+spatial reasoning or 3D spatial reasoning. Some of them is the mixed
+understanding and the counting. So we try to mimic the different
+reasoning or the action call needed to answer different
+type of the questions. And then here, the bottom,
+is the action sets, which cover like OCR, get
+object localization and depth estimation, and club
+regular zoom in, and the query language model,
+accurate solve math equation is really pretty diverse. So we go through this two way. We collect the data. And of course in this
+data, we have some of them is the train of
+thought action data. Some of them is not. Then we need to do some
+analysis on the data and test on the benchmarks. So first one, through
+our experiment, we found, to get the
+multi-modal foundation models, to have this reasoning
+or action core capabilities, you need to use fine tuning. In the result we found if few
+shot or in context learning, it doesn't work. And the second is, we
+finally have compelling for the tasks with this action. Adding this action
+capabilities is really to improve the capability
+to solve the task. It cannot solve before we
+improve the understanding capabilities, which means
+that even understanding this capability is also could be
+enhanced by adding external tools and make it through this
+function call or two calling to improve it. Which is not a
+surprise, but it's also interesting to see
+this positive results. So it can give us a
+different, another direction that are, how could we improve
+our models on understanding? And this is the
+second observation. We find the best COT data. So the COT data, the best
+one, which can almost test on the different
+scenarios that you see, it has on this A, OK, VV, QA,
+Blink, maps with time MMU. It's almost improve
+all the tasks which means that adding this action
+capability in a data set, that also act to create this
+train of thought action data, it can improve with this data. To train the model to
+the multimodal model, it can improve the model
+understanding capability in general, not just improve
+one model, one benchmark. And the third observation
+from the TACO experiments on the COT, the train
+of thought action data set, we find the quality is
+more important than quantity. Not just add more, you will
+get a better performance. So this paper is talk about how
+we could add in the action core capability into the multimodal
+language model or foundation model. And first you need
+to fine tune a model, not through the few shot. And second is, COT data
+is consistent to improve those models through
+this fine tuning on this instruction,
+this synthesized data. And the fourth one
+is the quality. It's more important than
+quantity, which is not new. It's some lessons we
+learned from here. So here, we have discussed about
+the environment benchmarking and the data synthesis. I think now you already
+have the comprehensive view, holistic view about
+this multi-agent areas. If you want to test
+the agent, if you want to generate the data. And if you want to do the
+I/O in the environment, you already have those
+tools and you can start to create your multimodal. So the last one, I want
+to spend some time talking about the model. Although, I'm not saying
+that this is the best model, but I think maybe you can
+learn from some insights from this model. I think so right now, I
+really have new models. So there's always
+have a better one. So I hope like we can
+discuss some different things about the model here. So I want to discuss
+this paper is Aguvis-- our paper, which is
+a unified pure vision model for the GI agent. For the GI agents,
+we finally have three issues we want to solve. First is, most of GI
+agent is text based-- text representation
+like accessibility tree. Second, the visual grounding
+and performance capability is not good. I think it's because
+most of the model not really to train the
+model for the computer use. And third one is
+most of the model is to generate an action
+directly without reason. So here is some more concrete
+slides about this three observation or issues. The first one, you
+can see, they have different the textual
+representation. Some like Web,
+HTML, maybe DOM 3. And in the OS, they have another
+type of accessibility and model have different ones. And most of them is super
+long, super lengthy. And it could be
+longer and longer as the complexity
+of your device. So comparing with the
+vision by pure vision-based, vision is just one. So whatever your background code
+looks like, the image is same. So that is one and about
+the benefit of the GUI. The second one is, because
+of different system use different tools, the action
+space is very different. It's not a big issue, but it's
+still a issue that it will prevent this effective
+course development learning, and also that you cannot
+leverage different training data together, which not good
+for the scalability. Then it's this visual
+grounding capability. So here we tested on the mobile,
+desktop, and web scenarios. We found that those
+close-source model performance surprising bad, I would say. So it means the model doesn't
+really optimize for the computer use scenarios. Then this is typically
+for the new one operator or cloud 3.5, 3.7 model. And here is an example,
+the existing methods, they train the agent to generate
+the low-level actions directly like this. The pi, the director
+of the code, rather than the sophisticated,
+the reasoning concept, reasoning the text,
+which would make to get those models
+or those agents very struggle on the
+complex scenarios in the real world, that may
+require more careful planning. Those planning
+knowledge could be transferred from the text
+corpus, which trained in the ARM before. So given these three issues,
+we propose this Arguvis model. First, is the pure vision based. So it doesn't matter what
+is the accessibility tree format it's using in a
+system or in a web browser. And the second is, if we improve
+the grounding model through combined we defined a
+new unified form format. We combine all the existing
+data and train the model to improve the grounding. And the third one
+is, we explicitly to include this
+reasoning process. And what we call
+the inner monologue into our training and the
+model training for the action generation. As I said, for the Arguvis,
+we eliminate this dependencies on the platform specific
+textual representation because it is pure vision based. It's directly operated
+on the screen images. So it makes the model
+more generalizable into different interface. And we did develop a
+standardized action space that we could combine
+the different data set into the same action format so
+that we can leverage more data-- the existing data. And the more crucial
+is-- the right side is-- we incorporate this inner
+monologue during the training, which can develop this
+sophisticated rhythm patterns, which
+through by leveraging the knowledge of
+memory patterns, is already memorized in the ARM. I think this is important to
+build more robust action model. So in each interaction
+step our agent were to generate this in the
+monologue, the two step, two component, the two
+parts-- the salt and the low level instructions,
+between the visual observation and the final actions. So through this
+salt and low level instruction and the action,
+you can consider this. This enables the agent
+and do it step by step from the complexity. Because at the beginning you
+get a high level instruction and you're doing this
+train of thought. So you decompose the problem
+into some small steps. And with those steps,
+you can do generate this low-level instruction
+for each step about action. And then you can get
+a better concrete code to access question. So then it could make the agent
+be more robust, more accurate. So that is the motivation. For the training
+we have two step. First step is the grounding
+and the second step is the planning
+and the reasoning. And for grounding, we
+did some tricks, which is grounding packing strategy. What do you mean grounding
+packing strategy? We want to find all the
+grounding pairs, the grounding samples, which based
+on the same image, and we concatenate them
+as a multi-turn grounding. As one sample, we found that can
+improve the training efficiency and even to have a big
+improvement on the performance. And in the second
+stage is, we add this in the monologue
+in our training, which make the agent to generate
+this intermediate thoughts and the low level instructions
+before they generate action directly. In the data part, as
+I said, because it's a pure vision
+based, we can easily to combine the different
+data sets together and define same format for the outcome. Then we can leverage
+most of the existing data and create a new data
+set to train our model. And for the monologue we prompt
+the frontier model as a GPT 4o, Given the observation
+image and highlight UI element with the
+instruction, and the final goal, and the final action code, and
+the bountiful gift for all, to generate in the
+monologue component. So this is an example
+of pivotal previous is they have the
+forms, instruction, and previous action. Of course, the observation
+is we don't add here. And this action then
+later after this step, we will have the thought and
+the low-level instructions in a new training data. So this way we create the
+Arguvis collection which is combined a number
+of different data sets. But then, we finally
+get for stage one. We get the one million
+the GUI grounding data. And for stage two we get the
+35k multi-step tragectery, with this explicit
+monologue reasoning data-- it's great. And then, we do the same
+thing like we did before. We run our model. We train our model on this
+ancient Arguvis collection data set. And we demonstrate-- we show
+that this Arguvis model performs exceptional on the
+grounding task. So the top is the
+grounding task. So it has no plan. And we can see the
+significant output from the existing
+models on those tasks. And we also run the
+two stage training. So we also have the single model
+to both grounding and planning reasoning action. And we found that after you
+did the second stage training, it even improved
+this grounding task and achieve the state
+of the art performance. And then, we also did the
+development evaluation on the offline
+setting on Matlab. It also showed it achieved
+the superior performance across different metrics
+on the offline set and also on the Android setting. We also did this evaluation
+on the online setting, which is a Mind2Web
+and the Android world, which is this Mind2Web guide. With different Mind2Web,
+it provides a dynamic web based environment to
+do the evaluation. And we can see the performance
+of how the archivist models the superior performance. And even better than so. And the one thing I
+want to emphasize is, if you see that here is the
+Arguvis 70 model with GPT 4o planar. It performed state
+of art in this tasks, which means that the Arguvis
+model have a better grounding capabilities. And this definitely can
+improve the final performance of this planar task. And also, we found
+they still have a big space for
+grinding to improve, to which will improve
+the final performance on the different computer use. And we do some analysis
+for different components in the Arguvis performance. Both stage one and stage two
+is important in the model. It's also very crucial
+for both the high level reasoning and the low
+level grounded tasks. And we find that,
+in the monologue, actually helps to solve
+the harder task, which in the right side, you see why
+is self plan wise in force plan. In force plan means, it must
+generate in the monologue. And it can achieve
+the 20% of resolve, 20% of the grinding errors. And the left, that
+is two examples with and without in the model. And we also see the
+cross-platform benefits in the Arguvis. The Arguvis is trained on
+the web and mobile data. OSWorld is a computer use. We find it remarkable,
+although we didn't try and exclusively on the
+computer use scenario, the model still
+perform pretty good. And with using Arguvis 70 to
+be as a grounding plus before, it's even better than
+how a computer use model. So here, you can
+take away is, first-- the Arguvis model is
+a unified framework. It can perform pretty robust
+across different platforms with only visual observation. And I think the visual-- this pure vision paradigm-- have a big advantages on
+the computer use or GUI use case, which I think
+OpenAI already agree with. This is my comment because
+they have the operator. And the second is, although
+they have a lot of progress, we still need to
+improve both grounding and the structural reasoning. Don't just try to
+improve reasoning. Actually, they
+have bigger space. There you need to improve
+in the grounding side.

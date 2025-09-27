@@ -1,0 +1,1426 @@
+CHARLES SUTTON:
+The introduction-- let me start just by-- before I get into the technical
+content, let me say, oh, good. I'll introduce myself. So my journey is,
+like, as Dawn said, I did a postdoc at
+Berkeley from 2007 to 2009 with Mike Jordan,
+which was fantastic. Back during my PhD, what I
+worked on was machine learning. Deep learning didn't exist
+then and for natural language processing. So back when none of
+this stuff really worked. And then around the
+time I left Berkeley, I started as a
+professor at Edinburgh. I started working on machine
+learning for program synthesis, code generation and software
+engineering problems. These were very exciting
+to us at the time. But, this is when we were just
+starting to get deep learning. So none of this worked. And then I moved
+to Google in 2018. And it's only very recently--
+and when I've been at Google, I've been working on machine
+learning for code generation. And then very recently,
+like in the past year, I've started to get
+interested in AI for security. So why am I telling you this? There's three reasons. One is, I always like
+to begin a lecture by professing my ignorance. So my background is very much
+more on the deep learning side than on the computer
+security side. So you're very welcome
+to ask me any questions you want about
+computer security, because fortunately, Dawn Song
+is sitting in the front row and we can get x and-- many of her group as
+well, so we can get expert answers to a lot
+of these questions, even if I don't know them. And the other thing
+is, just like I like to give career advice, I
+have a blog where I give people defunct career advice and
+research and because it's fun. And the one thing when
+I look back is that-- I mean, your career
+is very long, right? If you see, in the past couple
+of years, things are febrile, everything's changing
+every three months. It's not the technologies
+that are on top now. They're not going to be
+on top in five years. They might not be on top in
+5 weeks the way things are. So having just like
+change is normal. Technologies change
+and you want to learn how to change with them. And the other thing
+that I think I-- is a theme of this
+talk and something that I liked in the
+course, is thinking across different disciplines. So if you are working in
+machine learning, if you're working in some types of applied
+research or product-driven research or if you're in
+tech-building products, a lot of there's going to be
+the machine learning tech, and there's also going
+to be the problem that you're trying to solve. And if you know only the
+machine learning part of it and you don't think about
+oh, deeply about what problem you're try to-- you're
+missing a trick. Like, the more you understand
+the AI for computer security, the more you understand
+about computer security. Or if you're building
+a product, the more you understand about
+where your customers want. It'll help you to do
+better technical work. OK, so that's the
+end of my sermon. And now I will start actually
+talking about coding agents. So there's going
+to be three parts. I'll say a little bit
+in general about agents for code like [INAUDIBLE]
+SWE-agent type things. That'll be the first
+part of the talk. Then I'll start talking
+about AI and agents for computer security. And then at the end, I'll talk
+a little bit about a project that Don mentioned that I'm part
+of with a number of other people to do LLM agents for
+finding security bugs. But I'm going to
+start off with-- so I'm going to
+start off with being maybe a little bit philosophical
+about what LLM agents are. Since you're already partway
+through the class and you've already seen a number
+of examples of agents. I wanted to give LLM
+agents a bit of a buzzword. So I wanted to
+give my perspective on what that buzzword means. Other people would say
+potentially different things, and that's OK. But this is what I
+would emphasize in terms of what seems fundamental. So I would say the-- so the slides a
+little bit abstract, I'll start talking about
+actual stuff in a few minutes in one more slide. But for me, if you asked me
+to define what an LLM agent is without the buzzword bullshit
+whatever, I would say, look, it's a multi-turn LLM
+with tools, right? The [INAUDIBLE] thing
+is this react loop that we're going to talk about. And what makes this
+fundamental, why is this good? One is that you get
+dynamic computation time. So the point of like if
+you just give-- if you just prompt an LLM
+question answer, it has to start generating
+the answer right away. And maybe some of
+the earlier tokens commit the LLM to an answer
+that it then has to it-- that it doesn't
+want to contradict. Whereas if you give it
+dynamic computation-- if the LLM can generate
+a thought, whether it's a reasoning model or
+whether it's just prompt it, that gives more computation
+time for harder problems. The other thing, which we're
+going to talk a lot about is information from
+external tools. And that's another part
+of the point of agents is that you can actually--
+oh I'm going to-- oh, is that, for example
+encoding agents, you actually run the
+code, see what happens and then write different
+code based on the output. And it turns out that's
+incredibly powerful for more complex code generation tasks. And we'll see examples
+of lots of other things you'd want to use external tools
+for in code generation software engineering type scenarios. The other thing that's
+maybe more from the-- more from the
+cognitive perspective of what's interesting
+about tool use is that tools give the agent
+the ability to test hypotheses. So the agent can, like in
+the thinking part of a loop, say, oh, I think that when I
+run this code on this input, it will break at line 13. And they can actually do
+it and see if it was right, and then revise in later turns. Like say something
+different if it turns out that this hypothesis was wrong. And I think that's
+something we're-- for some of these
+simpler tasks, you might not need that level of
+experimentation in the agent, but I think for more
+complex tasks you will. And then the final
+thing this gives you, which I think
+is really good, is like if you want the LLM
+to actually do anything, then it needs to interact
+with the external world. And that's-- in one sense,
+that's what a tool is giving you. So I guess-- so the main thing-- maybe I disagree with what
+I wrote on the slides next. So you could think
+of when people talk about planning
+or chain of thought, you can view these
+as like special cases of dynamic computation
+time, right? These are ways to use the
+extra computation that you get from having thinking tokens. This de-emphasizes
+multi-agent a little bit that's maybe that'll
+turn out to be really important to have
+different interacting agents with different prompts. But I think-- my sense is
+that that's still emerging. The jury is still out on that. So that is OK. So that's going to be the end
+of the philosophy for now. I'll intersperse
+philosophy maybe into the rest of the lecture. I'm going to start by not
+talking about agents, though. I guess I've already started
+by not talking about agents. I'm going to continue starting
+the agents lecture by not talking about agents. And the next thing
+that's not agents that I'm going to talk
+about is evaluation. So the reason that I'm-- the
+reason that I'm doing that will become-- I'll talk about
+that in a minute. So before-- when we first
+started to see big-- I want to talk a little
+bit first about say, the prehistory of evaluating
+code generation in LLMs. So when we start-- there was a big moment in,
+I guess, four years ago now. It doesn't feel that
+long, but it was-- when we saw a step change
+in the ability of LLMs to do code completion and
+code generation tasks. This was about the time the
+OpenAI Codex model came out, the GPT3 iterations. And at that time, there
+were a couple evaluations of code-generation
+capabilities that people were doing at the time, and
+WBBP that we did at Google, and human eval from OpenAI. And these are kind of
+broadly similar things. And what these are is basically
+natural language to code. So these would-- each of
+these data sets would have-- order of several
+hundred examples, where you would generate a small
+Python program, maybe five or 10 lines of code, and
+you wanted to do that given a one or two
+sentence prompt that says what the
+code is supposed to do and a series of assertions. And at the time, this was-- at the time that this came
+out, I'll say more later-- and these were both
+generated by people. So there were-- human
+annotators wrote the programs and the problem descriptions. So I don't recommend using
+these evaluations anymore. They're more like
+MNIST, but I think-- they let me talk about a
+couple of points that's why I'm starting with this. One-- and at the time
+that these came out, it was amazing that a
+language model could generate an entire function
+of 10 lines of code, right? That's not amazing anymore. So one thing that's
+interesting about this, I'll come back to
+later is, I want to talk about both how you would
+use these to do evaluations and why you don't
+use them anymore. So we talk about how you
+use them to do evaluations. So what we would do for these
+data sets is we measure pass@k. So how often given the
+natural language prompt, do we get a correct
+answer in k samples. So if you like my fancy
+AI-generated graphic there, if you take a prompt and get
+say k samples from the model and just say run them all on
+those, a set of assertions that may be the model-- the model--
+ones that model did see, maybe a few hidden ones the
+model didn't see and then say, OK, how often does the
+program pass those assertions? And then if any of them
+pass, you get a score of 1 for pass@k for this example. So the reason I'm
+telling you this-- is there's some principles
+of this that even though we don't use MBPP human eval
+anymore you probably shouldn't. There's some principles
+of this that you do want to use when
+you define evals. One is that this requires an
+automated correctness check to work. Having that-- if it's
+at all possible for you to have that when
+you're defining an eval, you want to have that. The other thing that's
+nice about this. You don't see this as much in
+agents because it's so much more expensive to run is that you
+get to measure, explore, exploit behavior. If you can afford to do
+a pass@k eval, right. So if you had a model
+that like always produced the correct answer,
+it was either always right or always wrong. And there was no
+diversity in its output. One would be the same as pass@k. Whereas like, if pass@k goes
+up sharply, that's telling you, well, maybe the model's first
+solution isn't always correct, but it's giving
+you more diversity. That's interesting. The other thing
+to point out here is an interesting question,
+like does pass@k match what you want when you deploy the model? And the answer is sometimes
+yes and sometimes no. If you are doing
+code completion, you probably don't care
+as much about pass@k, because I'm not going to show-- every time I hit the
+completion button, you get to see 10 examples
+and pick the one that's right. That's probably not so good. Whereas if you're doing
+something more agentic, it might be-- it might be fine. It might be perfectly
+fair to say. I mean, it is perfectly
+fair to say, oh, in production I'm going
+to generate k samples, keep the ones that
+pass the test cases and only show, say, a highly
+ranked one of them to the user. So sometimes this reasonable--
+sometimes it's a good metric, sometimes it's not. So it's always
+interesting to think about for this particular way
+in which I'm evaluating a coding tool, does it match what--
+the way I'm actually going to use it in production. OK, this is maybe not-- I just putting this
+because I think it's cool. It's a little statistical aside,
+which you may or may not know. And since, like machine learning
+used to be based on statistics, you see less of
+that work anymore. I find it kind of interesting. So if you are-- so how do you want to compute? Like say I care
+about pass@10, right? How am I going to compute that? Well, the naive
+thing you could do is I could say, well, take
+100 samples from the model and say, OK, what percentage
+of them actually passed. So maybe it's 20%. And then what I want to
+know is if I take 10 samples from this, how much does it-- how likely I am to get it
+and so you can take 20% and plug it into that. It turns out that's bad. That's a really noisy
+statistical estimate. So it turns out it's much better
+to say take those 10 samples and then say, if I take
+those 100 samples and say, if I take a subsample of 10
+without replacement, right? How often do I get
+at least one success? And that's the estimator
+that's proposed in the Codex paper, where
+they talk about human eval. I don't know, I just
+think that's cool. So now let me-- so I've
+gone through this at length. And the reason that
+I've gone through this is to get to this
+slide, which is like what is the design of
+a good evaluation for coding agents or for agents in general? And in 2021, I think
+these were probably reasonable evals at the time. And there were three-- and the reason is that they
+could drive model development. The reason is-- the
+reason they could is that they were just hard enough. So they're not floor. They're not ceiling. So that when you
+improve the base model, you would actually see a
+difference in these numbers. And then at the time,
+they weren't leaked. So they weren't already
+on the internet. Now, probably not. They're too easy. It's too easy to overfit-- you
+could overfit to the assertions. And they're certainly leaked. So these are probably more like
+the MNIST of code evals now. But the reason I go through this
+is when we look at other evals, we can ask the same question. So probably most
+influential so far-- so let's now move to evaluations
+can be used for agents. So the most influential
+evaluation has been SWE-Bench. So let me talk-- which I didn't-- maybe I have
+the citation on a different slide. But it's easy to find. So what SWE- Bench is
+a way of generating-- it's a data set of
+real-world coding problems that have been collected from
+Python repositories on GitHub. So one example of-- an example from the
+data set is here. So the idea is that
+they would talk about-- filtering to the next step. So the idea is you would have
+a problem statement, which is actually from the statement
+from the GitHub issue tracker. This is-- one thing
+I point out here is just that the issues
+will often contain pointers to a part of the code or
+that you want to modify. And all of these
+examples have test cases that were part of the
+patch and the test cases for which before
+the patch, the test case fails, and after the
+patch the test case succeeds. So you have-- for each of
+these, you have a test case. You have an issue description,
+you have a change to the tests and you have a patch. And so the goal of SWE-Bench is
+to generate the patch from the-- generate the patch
+from the description. And these are-- OK. So I've talked
+about-- so there's some steps of filtering
+you do, like can this fail to pass filtering. And also the fact that you
+can actually install and run the projects. And I wanted to show in terms
+of looking at the domain. So this has been
+very influential because at the time
+that it was introduced, it was at the Goldilocks level
+that the baseline LLMs were getting like 2% or 3%. And then as soon as
+we switched agents, we got non-trivial boost. So this was introduced. It's an-- it was an interesting
+subset of real-world tasks that was introduced just at
+the right time, where this could drive model development. And so it's been very
+influential and a lot of people have used it. What I would point out from
+the things in the bottom is on the left is a pie chart
+of which 12 projects these came from. And you can see there's like--
+it's a small set of domains. These are Python packages that
+are mathematical data analysis web. It's not covering the full range
+of software engineering tasks, but it is covering tasks
+that are interesting. And look at the set
+of files edited, the set of functions
+edited, it's a big step above previous
+evals, but there's a lot again, that it's not covering. So there's also--
+and then there's also a small-- so one thing
+that's both nice and not nice about this is that you have
+the issue descriptions that are coming. The issue descriptions are
+the ones coming from GitHub. So that means that sometimes
+these are underspecified or they're test
+cases that are just somebody was-- they're tangled. Somebody was fixing
+something in the code. They wrote some more tests,
+but it doesn't actually test the problem. So there's a subset
+where these have been-- where these have been removed. So now let me pop
+up and say, OK, now let's ask the same
+question that we asked of the previous slide,
+which is are these evals good? And the answer is, well, yes-- yes and no. So as we said, this is a
+significant step up in realism. And it came at the right
+time to drive the field. So that's great. What's wrong with it? Well there are lots of things
+that are wrong with it. That's OK. There are lots of things that
+are wrong with everything. So what's wrong? What's wrong here is that, you
+can overfit to the test, right? The tests aren't
+an exact verifier. So you can produce a patch
+that makes the test pass but isn't actually correct. Maybe even something where
+it's been a little bit more is the natural language is
+out of domain in the sense that if you are interacting
+with an agent in your IDE and you want to tell
+it to make a change, you're probably not going
+to use the same types of natural language as you would
+in a GitHub issue description, right? Like maybe you've diagnosed
+the problem a little bit more. If you're going to share
+it with other people then if you're just asking an
+AI in your IDE, please fix this. And they might-- and some
+issues might contain things about the solution, about
+what part of the code the issue should be fixed. Sometimes you know that,
+sometimes you're not. And so we've talked about
+coverage a bit already. And we've talked
+data leakage is-- when this data set came
+out, a lot of people were worried about, oh,
+these are all from GitHub. This is in the training set
+of all the large models. Should we be worried about that? And I think the
+answer is when systems are getting 2% on
+SWE-Bench, no, we should not be worried about that. When systems are getting
+50%, we probably should. And then the other
+thing, whenever you do these
+historical data sets, I think something that
+people often don't realize is these commits are tangled. It's often the case in on
+open-source repositories that commit will not just fix the
+one issue that it claims to fix, but it'll do some other
+things, like maybe it fixes another issue, maybe
+it does some other cleanup. So that affects the
+quality of [INAUDIBLE]. It certainly affects
+the test cases, but it also affects--
+if you're going to do supervised fine tuning on
+patches that might not be such. There's problems with that. So the reason I'm going
+through this at such length is that I think in large part,
+the quality of either the base LLM or the agent
+that you develop is going to be driven by the
+quality of the evaluation. And the reason for
+this is, I don't know, sometimes I like making
+analogies to statistical machine learning methods. Any organization that builds
+either LLMs or LLM applications, it's just doing a giant
+combinatorial optimization. So you have a design space. You have a bunch of knobs like-- we'll talk about the knobs
+for agents in a minute is-- and you are-- and you say,
+OK, what if I say-- what if I set this knob this way? What if I add this tool? What if I change the system
+instruction this way? What if I clean up, this part
+of the post-training mixture, and then you try it and you
+see how the numbers change. So if your numbers
+aren't good, your hill climbing on the wrong thing. And I think that
+has a direct impact on whether the quality
+of your evaluations has a direct impact
+on the final system, whether it does what you want. And so the things you want
+to think about are some-- obvious like I think the main
+one is the level of difficulty. You have to be in
+the sweet spot. Also, you want things
+that are realistic, that test what you
+care about and that aren't leaked to be leaked. And the other thing,
+like all evaluations, have a shelf life, right? Once they start out, you're-- they start out like, with,
+say, MBPP human eval. They start out being
+hard and unleaked and then like a couple years
+later, they're easy and leaked. So it's just like
+you have to keep making new ones continuously. I-- hopefully, I've
+spent enough time-- so I'm going into technically
+simple stuff at length. But I think it is important to
+actually building these things. So now I can actually
+talk about code agent, which is a good thing to do
+in a lecture on coding agents. One that I thought was
+a particular milestone was SWE agent. So this was one
+of the early ones that was specifically designed
+for SWE-Bench style tasks. In some sense-- in
+some sense, this talk is going to be very repetitive,
+because I think that we're all working with the
+same set of three or four ideas in the base
+models or application layer on top of it, which an agent is
+an example of this, like crank. And there's a certain
+thing like if you want to do an agent
+for, I don't know, fixing AV issues versus an
+agent for making patches to repositories,
+it's going to be a lot of the same types of
+engineering that you do. First thing you're going to do
+is define it-- define an eval. The second thing
+you're going to do is create something that
+looks like SWE agent. So what SWE-agent is it combines
+a bunch of different things that people had all done before,
+but it's a powerful combination. So one is that it's
+going to give you-- that we're going to instruct
+the model in such a way that it does, chain of thought,
+in the sense that it explains what it's going to
+do before it does it. There's going to
+be a set of tools that are specific to
+software development, and the agent is going to
+get execution feedback. So that way, like
+I've said before, you can get information
+about what happens. So the main loop,
+which is going to be what I call the ReACT loop. And I put those emoji
+on there for a reason. ReACT loop from the ReACT
+paper a couple years ago. Oh, because I think this
+loop is at the heart of what I was saying about agents
+of this idea of chain of thought plus tool use. So all you're doing
+is basically-- it's basically like a very
+simple loop, where you say-- at every point, you have what
+we call a trajectory, right? Some text that the LLM
+has generated so far. At every step, we ask the
+LLM to generate more text, and then that text will end in
+a tool call in whatever format that you like, and then
+you get the tool call, you actually run it. Every tool is basically,
+to a first approximation, a Python function that
+outputs more text. Like, I'm not going to talk
+about multimodal agents because we don't really
+need them for code. There's been less work on
+multimodal agents for code so far. And then whatever the
+output is, you just append it to a trajectory
+and then you repeat, right. And that's it. This loop-- we'll talk about
+alternatives to this control flow as well. But that loop alone
+is very powerful. It's at the heart of a lot of
+what these things are doing. And in principle, the LLM
+can generate whatever text that it wants. We would hope that it's
+something that actually helps it decide what tool call to use. And so we instruct it
+as a system instruction in the beginning-- I guess I should have
+initialized this with what we call a system instruction. And that's going to tell you
+that says it, please explain what you're doing. And so then it will. So one of the main design
+decisions here is like well, what tools do you want to use? One option that
+you could imagine is, OK, we'll just
+give the agent access to a Linux shell and an IDE. Then a person can do on
+that-- on that machine, you can write whatever
+code it wants. This seems-- I'm not saying
+this will be true forever. Right now, this still feels a
+little bit futuristic, right? Two weeks from now, who knows? And this is another
+theme when we talk about the design
+of agents, maybe this is one of the
+things I forgot to write on the slides is that
+the design of the agent harness and the tools you have to
+co-design it with whatever the model can do, right? So when you're doing-- if
+you're doing prompt optimization to try to decide, OK,
+how do I summarize the output of this tool? Well, probably the
+way you're doing it is you're adapting,
+either knowingly or if you're part of the-- or unknowingly, you're adapting
+to whatever the model is seen in post-training data. Because the more--
+the closer like you want whatever format to use
+to be things that the model is familiar with. So where we are now is
+like, OK, maybe right now, option one is a bit ambitious. Let's do something different. Let's make things
+easier for the model. So what we'll do is we'll say--
+we'll design tools in such a way that there's going to be a
+small number of them that are good for this
+task, and they'll have inputs and outputs that
+are friendly to the agent. And there's a really catchy term
+they use in SWE-agent paper. It's like an agent
+computer interface instead of a user interface. So instead of HCI, there
+could be a science of HCI. That might be going a bit far,
+but there are design principles here. So what are they
+doing in SWE-agent? Oh, OK. Yeah before I get
+to that, what-- so like I said, a tool is just
+a Python function or a code that the agent can call and to
+get a string from the context. What do you want-- what do you want
+these things to do is when you're
+thinking about them, well, they should be easy
+to describe to the agent. So you don't want to make
+up technical terms, right, that if you're writing-- when you're designing
+a piece of software, you can invent vocabulary,
+different objects in the thing. Here, you want--
+like the closer you-- I've heard this-- I
+think some of the guys-- I think I heard this from
+some of the people who developed Copilot is-- so there's a lot of the--
+initial probably still but certainly, the
+initial version of Copilot there's some really
+clever prompt engineering to make things work with
+the LLM of that time. I'm sure there still is. And one thing they talked about,
+they call it like the Little Red Riding Hood principle,
+right? that when you're doing prompt engineering,
+you want the-- you want to lead the model
+down a familiar path from post-training data. And I think that's
+true here as well, that you want to be able to
+describe what the tool does in a way that the agent
+will have understood that-- there are plenty of web
+pages that talk about-- talk about-- go-- jump
+to this line of code. So that's something
+that's natural. The other thing is
+you want the agent-- you want the actions
+to be compact, right? You don't want something
+where the agent has to call four or five
+tools to do one logical thing. The other thing is you design
+the output of the tools, right. So you might say, it
+might make a difference. Oh, how do you handle
+trailing newlines in the output of some tool? Or if the output-- if you're
+doing a code browser tool and there are many, many results
+like how do you summarize that? Like there's different options. And the other thing
+you want to think about is a guardrails is like state. So if you're talking
+about code editing, then you could imagine
+something where say, the agent adds-- it's the
+first thing the agent does-- is add a stupid syntax
+error to some file and it doesn't realize it. And so then the rest
+of the trajectory, the agent is just messed
+up because no matter what it does it-- it hasn't fixed
+the syntax error. So you want to try to
+have some error checking to avoid, especially for
+stateful tools like code editing, getting the agent
+into a state-- bad state that's easy to get out of. OK, so what tools do
+they have in SWE-agent? One is-- well, I
+think they did-- they did have a Linux shell,
+but that's maybe sometimes useful but not so useful. But often like these
+tools are helpful. I would say there's
+three types of tools you could think about
+in this style of agent, one would be
+information gathering. So that doesn't help
+the agent solve. It gathers information. So in the case of
+code, this would be doing code search
+and viewing code files. So you can-- so this
+would be-- and so you see some of the design like
+this would be things like, oh, find this term in
+this file, find this term in any file in this directory. You notice that it's a
+nice shortcut, right. You could imagine having-- just
+doing LS in the Linux shell and then doing-- then the agent could do
+search file in any of these. That seems cumbersome, right. And then how do
+you deal with files that are too long for context? Here, what you could do is
+call the open file-- open-- to see part of a file and then
+have a specific scroll commands. So the second thing
+you could do is acting, right, which is
+just, in this case, make edits or create new files. And then you can get
+feedback by saying, OK, I'm done, please
+submit this patch. And I think in general, if
+you want more complex tools, I think most tools
+will fit in to-- fit into this. There are guardrails
+here that if you make a dumb edit that context
+error or [INAUDIBLE] error, it just gets rolled
+back for you. And you can do-- there's
+things like this. I mean, to give you
+a sense of what the-- I couldn't fit a full-- I will show some
+trajectories throughout this. I couldn't fit a full
+SWE-agent trajectory on here. But here's an example
+of the explanations you might get that you say,
+OK, oh, now I know what to do. We need to add a check to
+ensure that all of these things are the same. Let's edit the code. And so it says oh, replace
+these lines of code with this. Or if you want to do file
+search, you might perhaps-- you might like a lead the lines. You might provide line
+numbers like these are-- like you need the line numbers
+so that you can use them in a subsequent command. So you can design the tools
+to fit together in this way. Typically, what you
+will see for this agent, you would typically see-- the tools are called in the
+order that you would expect. If there's some identifiers
+used in the issue description, then the agent can call the
+code browser tools to find code that's relevant to it. At some point, one
+of these thoughts will say, oh, let me make
+this change and you see edits, and then you might see multiple
+edits and then a submit. But the agent is
+restricted to do that. This is just-- it--a as far
+s the model is concerned, there is just a string. And the model is continually
+appending to this string. So OK. So let me say-- I'll say a little bit about the
+results in the SWE-Bench data. So the first thing
+is I did set it up and say, well SWE-Bench was
+really hard when it came out. And so if you look at,
+whatever the state of the art LLMs at that time and say
+what percentage of the-- I think a couple thousand
+issues in SWE-Bench were resolved by the model. It's like one or 3%. And I can do tell a fun. I don't know if it's fun for me. I don't know if
+it's fun for you. A story there, which is that
+when SWE-Bench first came out, I thought it was-- I thought it was a
+pointless evaluation because it was just too hard. How do you hill climb on a model
+when you're getting 1 or 3%? So it turns out I was wrong. And the reason that I
+was wrong about that is because agents are
+actually really good. So when you put an agent loop
+on top of this base models, you go from 1% to 12%, right? And I think now the state
+of the art in full SWE-Bench is quite a bit higher than that. So it was-- so this--
+so it's like the fact that [INAUDIBLE]
+agents came out, SWE-Bench came out as
+part of the reason. They're part of the
+co-development that happened. One thing to point
+out is you might-- one thing I can
+experimentally criticize here, although I think
+this is a good paper. The results are good-- is an agent is going to have
+to generate more tokens to get the same level of performance. So you see that as represented
+as the dollar average cost per successful trajectory
+in the second column. You would like to know-- you would like to see
+computation normalized results. It would be interesting. Like, if I ran 10 times
+as much do, I expect-- if I ran 10 times as many,
+if I generate the same number of tokens on average from both. Here, I think, agents
+work-- it's fine. But I think when you're
+comparing other changes to the agent, you
+might say, well, there might be some changes to the
+agent that look really good, but it turns out what you're
+doing is getting higher-- is getting like,
+maybe you add, I don't know, some grep
+tool that puts lots of tokens in the environment. And if it helps, that's great. But it might be that,
+oh, it's helping because it's adding more tokens
+to the average trajectory. And if you didn't have
+the tool and just generate more trajectories, you
+could get the same point on the cost performance curve. So it's something-- you want
+to think about that when you're running these comparisons. There was something
+that I wanted to say about the shell-only
+agent, which I don't remember. Oh, well, OK. Maybe we'll come back later. That's maybe the first very
+dynamic ReACT style agent. So now I want to talk about a
+different kind of agent design. And that's the other extreme,
+which is called agentless. It's like yeah. So this was in terms
+of where does-- this is the other extreme
+in terms of how much control flow do you handwrite. So what we've talked
+about is dynamic, where the control flow is
+I'm appending to a string? Everything else,
+the LLM decides. The LLM could, in principle,
+implement whatever algorithm it wants on top of these tools. The other extreme
+is just procedural. So basically, I will
+write some, say, Python code that does
+something natural for solving program
+repair tasks. And every time where it's
+where I might say, oh, OK. So first I'm going to
+iterate through every file in the project and
+then I'm going to [? whether ?] that file
+is relevant to the issue description or whatever. And so whenever you get to
+a point in the algorithm where you need to say,
+quote-unquote magic happens, you call the LLM. And so this basically
+like you have code, you have the logics in
+code, but then you're asking the LLM to make certain
+decisions in the middle of the control flow. So that's basically what
+agent list is doing. So there's three-- I say hard coded. I don't mean that in
+a pejorative way-- three steps. One is figure out what you want
+to edit, then generate a patch and then validate the patch. And I will give you
+a colorful diagram that says the same thing. So what you're going
+to do is you'll have-- is that you'll have this
+workflow where at various points you call an LLM. So you'll start by saying,
+OK, you have some code base. You textify the structure
+of the repository. You prompt the model to say,
+oh, which file should I look at? So then you get-- the
+model will give you a list of top-end files. And then each of those
+you could say, OK, here is a skeleton of the methods
+and classes within each of those files, then you
+call the LLM again to say oh, where does it look
+like I should edit. And then you can do that one
+more time to get a set of lines that you might want to edit. So at each one, you're-- so at every point, you
+have an end-best list of potential things that
+you might want to edit. And then you go through and say,
+OK, now for each one of these, let me independently give this
+to an LLM and say, hey, here's a description of the
+issue, generate a patch and then you can do is-- and then once you have that,
+you apply the patch, A, let me see which ones pass. Now, one thing that's
+important about SWE-agent is you don't know what
+the test cases are, right? So the agent itself
+has to come up with its own test that
+hopefully describe the issue. All the agent has is it
+has the previous tests, which might not--
+which probably don't test the bug it's trying to
+fix, because if they did, the test would fail and
+the bug wouldn't be there. So the agent's going
+to have to generate-- going to have to
+propose its own tests and then run the tests
+and the proposed patches. And so that gives you a-- so that gives you
+a set of patches that are plausible that in the
+sense it's a technical term, it means that they pass the
+agent generated test case and then we rank them and
+then one of them we submit. OK. So there's a very big table. So at the-- I'm not going to read
+the entire table to you. This is a subset of the
+SWE-Bench leaderboard at the time that
+this paper came out. The order is now changed. But at the time
+that this came out, this was-- and this was one
+of the best open source agents and it still is. The order is slightly different,
+but it's still near the top. So what I want to-- so the thing I want
+to take away from this is what are the advantages and
+disadvantages of different agent designs. So under one-- the more dynamic
+SWE-agent type approach, the LLM gets to choose
+what problem solving strategy it's using. So if the LLM-- if the model produces a patch
+that's nearly right and then there is a-- whatever. One of the tests fail,
+then the model-- then you can extend that trajectory. The model can decide, oh, do
+I need to do some more code search in order to figure out,
+oh, that this thing has failed? Why I wasn't able to
+get the patch right. Or maybe I just want
+to make a small change to the patch that's going
+to make it correct, right. The model has the
+flexibility to decide what strategy it's going to do. Whereas for-- whereas on
+the other side for the more procedural one, if
+you have a case where you know the problem can be
+solved with a simple workflow, then why make the LLM figure
+out what the workflow is, right, and let the models spend
+more time actually trying to solve the problem. And you avoid tool use
+errors because the tool use is happening on top of the LLM
+rather than within the LLM, and you can avoid things
+where the LLM makes some initial mistake and then
+the whole trajectory goes off the rails. So the-- I missed
+one thing there. OK. Yeah. So none of these
+come down to how do you want to budget the set of
+compute-- the amount of compute that you have at test time? Like, if you imagine that I have
+one partial patch where it's failed, is it a better idea
+to extend that trajectory and try to fix that patch? Or is there a better idea to
+throw it away and generate a new one? Agentless this is more going
+to be like generate and test, whereas dynamic could choose. And the second part
+of this is that this may be a case where the winner
+between the two of these depends on what type of-- what's the word? Depends on what type of
+problem you're considering. So for simpler-- for
+simpler smaller patches, generating test might be better. I'm speculating here, but the-- perhaps for longer,
+more complex changes, we will start to see--
+if we move to that, we will start to
+see more advantages to having more flexibility
+in the problem-solving style. So that's the-- so you think
+there's a continuum in terms of-- we've actually talked about
+three different coding agents so far. One which I didn't talk
+much about was just give the agent a Linux prompt. So that's all-- there's almost
+all the control is in the model then-- or you could do
+something like SWE-agent or agentless in
+this continuum here. And it may be that has
+the base model capability changes, has the amount of-- and has the
+complexity of the task changes the design
+point here that you do might want to change. So there are I think,
+three more coding agents I wanted to talk about, but
+these go faster and faster because they are more
+similar to each other. So another one of the highest
+performing open-source agents right now is this one AutoCode
+Rover, which is from this-- University of Singapore. I think-- the last
+time I checked, I think it was OpenHands
+was the biggest-- it was the highest on the
+SWE-Bench leaderboard. That might have changed. But I think there's a lecture
+from last semester on that, so I won't go into it. So for AutoCode
+Rover, the two things I wanted to talk
+about here are-- the first one is that it has a
+different set of search tools. So it's that--
+rather than being oh, let me find this string
+in a set of files, it's actually
+indexing the methods and classes in the files in
+the same way that an IDE would. So you can have the
+search tools or things-- find a class with this
+name, find a method with this name in this class. So that changes the type of
+code browsing behavior you see. It can do more
+explicit command click. I also wanted to talk about
+the control loop here, which is that it's a
+concatenation of dynamic agents. So there's-- there are
+two phases to this. One is try to collect-- information gathering,
+try to do code retrieval. And then the second part of it
+is actually generate the patch. And each one of these
+is a separate trajectory with a different
+system instruction, different set of tools. And then you-- and then you
+run them one after the other. So it is an in-between point
+between agentless and SWE-agent with some procedural control,
+some that's more dynamic. And the other thing that you
+get from having these two agent loops is information hiding. Like, if there were
+particular-- if in like one-- for code search, it probably
+doesn't matter so much. But there might be
+other types of agents you design where
+you care about this, which is that if you have a-- you might want one
+of these agent loops to come up with an
+answer, and then you want to throw away the
+intermediate reasoning, just get the answer
+that it came up with and give that to another agent. That's something you
+could-- because you're worried that if
+you keep irrelevant things in the context,
+it will confuse things. So let me-- then the-- I think I have two. So I didn't want-- OK, that's fine. So the other-- no, I'm going
+to do things out of order. The one-- I will come
+back to those don't-- so you can take this-- you could take this kind
+of procedural control to another extreme and
+say-- rather than say, [INAUDIBLE] let's do filtering,
+you can have a state machine. So repair agent is
+another recent one, where it's a similar the way--
+it's-- so these are for program repair tasks. They're different data set. It's not SWE-Bench, but
+that's not so important. The main thing is for
+doing program fixing is the design of the agent is
+given by the state machine. So where we design
+what are the steps that we think you do when you
+investigate and repair a bug? Each state has a specific
+system instruction that says, please
+try to do-- please try to understand the bug,
+if you're in this state. And depending on which tool the
+model does next at the end-- and then the model is-- then
+given the system instruction, the model is going
+to do some thinking. I'll put a tool call. Depending on which
+tool call is chosen, you move to a different
+state of the state machine. So if you're currently in the
+collect information state, then when you do a code
+search you stay in that state. And you can do
+more code searching if you call the right
+fix that's a tool that moves you into a different
+state and changes your system instruction. So that's a different way
+to get dynamic control with more information hiding. So the final thing I wanted
+to talk about, which is try-- there is-- although there are-- so what I've been talking about
+are more academic agents there-- although there are a lot of
+industrial coding agents, there's less technical
+detail about them. So this is one of-- the ones that I know that's
+like a research agent moving towards being used in industry. So this is a research agent
+at Google called Passerini. And these are several of-- so I'm not involved
+in this work. Several of my friends in the
+developer tools org built this. And so this is an
+agent that is designed to solve internal coding issues
+that Google developers have. And what makes the Google
+code base different it is that everything
+is in a monorepo. So this thing is
+rather gigantic. And therefore we have special-- the build system has
+to take into account the fact that there's
+a monorepo that's so big that we can't store all
+of Google's code on our laptops, for example. So there was-- I've talked-- I've talked about agents. So the first thing
+you have to do is make an evaluation if you
+want to have this kind of thing. So what they did is there's
+a SWE-Bench like loop, where instead of using
+GitHub pull requests, we use internal bugs and fixes
+from our issue tracker system. So we'll take cases where
+there are bugs that were fixed and some heuristics that these
+are reasonable things that we want to use for an agent. Like, there's a change
+in test-- in tests and the size of the
+patch and so on. And then we do a
+list of filtering to have a curated test set,
+both of two different bugs. One is-- ones where the bug
+report was written by a person, but it had a small enough
+patch size and so on. And the other one is
+automatically generated bugs. So these are things that-- I'm going to talk about this
+a bit more in the computer security part of the
+lecture-t-- is that when for-- when we're doing
+testing of Google code, sometimes we will
+run sanitizers. So these are dynamic
+analyzers that sit underneath the
+code that's running and check that certain bad
+things aren't happening. So one bad thing that could
+happen is a buffer overflow. So there's a
+particular sanitizer called a [? dress ?] sanitizer,
+which you can use it well-- you can use it at
+home as well, where it tries to detect at runtime
+whether your executable is reading or writing
+out of bounds. And if it does,
+it causes a crash. So internally, when these
+kinds of bugs happen, it creates
+automatically a report in our issue tracking system. So we have a number
+of reports like this. So this research agent is
+a ReACT style dynamic agent like SWE-Bench, SWE-agent. The difference is the tools are
+actually our Google development tools. So there's an API to
+Google code search our build system,
+which is called Bazel and you can view and edit files. So that is-- so
+that's Passerine. And one thing I
+wanted to point out since I've talked
+about evals, is what are the differences between
+this curated evaluation set SWE-Bench. So these top three
+plots are different-- they are cumulative
+distribution functions of different statistics
+of SWE- Bench versus our internal
+evaluation for Passerine, and the SWE-Bench
+is the blue one. And then the other two are
+the machine or human subset. So generally what it
+is, especially the-- so this one is like
+how many identifiers are in the patch, how many
+files, how many lines. And so for example,
+especially the human patches from this data set are
+larger, affect more files, have more identifiers than
+what we see on SWE-Bench. SWE-Bench is more similar
+to these sanitizer reports. And then there's also-- maybe I won't get
+into that [INAUDIBLE]. So reports about
+the you can look into how this agent performs. So that is-- so
+that's going to be-- so this is maybe a good place
+to stop for the coding agents part of it. So I'll get into AI
+for security next. But the main thing to-- so I've
+talked about how agents drive the design of these systems-- evaluations drive the
+design of these systems. The other thing is like we're-- so all of these are more
+similar than they are different. I think we're all working on
+the same three ideas right now. The other thing about
+these is the ideas-- I mean, I don't mean
+this disparagingly-- the ideas behind all of these
+agents are fairly simple. It's just the design
+space is large, so there's a large
+set of hill climbing that you do when you have this. So we talk about-- so
+what is the design space. So one is, OK, which
+tools do you want? We've talked-- we've seen
+different examples of that. How do you handle control flow? Is it dynamic? Is there a state machine? Do you recursively call an
+agent within a lower level agent like-- whatever. Do you just write the
+control flow in code? And then there is the
+design of the text, what do you write in
+the system instruction? You can do the general things
+you do for prompt tuning. You can tell the agent in
+stronger or less strong language how you want it to solve the
+problem, what order you want it to call the tools, how
+you describe the tools, how you summarize tool
+outputs and so on. All of these things have
+to have sandboxes, right? Because you're running
+model generated code. So I guess there's a
+right way to do that. But that's something
+you have to deal with if you want to have an
+agent that is communicating with external surfaces. All of these are
+hermetic, right? If you were doing
+something like to presage the next set of the talk like
+penetration testing as an agent, then you need to figure
+out, oh, this is actually communicating with external. Or if you wanted an agent
+to manage your email, how would-- you have
+to think about, OK, how do you even prototype that
+when you have to communicate with external surfaces? And one thing we haven't talked
+about because these are research agents is what do we do? How would you involve
+a human in the loop? Like when do you ask for
+clarification questions? When do you ask for approval? So I think-- and I think I
+already talked about this. So that is what I wanted to say
+about general coding agents. So the next part
+of the lecture is going to be more of AI
+for computer security. And then some of our
+own work in AI security. So now I want to finish by
+talking a little bit about AI for computer security,
+which is maybe a more emerging area than
+AI for code generation. Why did-- oh, what was this? Oh, no, I just said that. Sorry, I'm confusing myself. So let me start. I'm just-- I'm going to
+dive in and talk about-- yeah, I'll talk about
+evaluations but for particular. I want to start--
+one type of work that I want to start by talking
+about is capture the flag competition. So that's one-- so if you say,
+oh, I want to do AI for secure-- no if you start
+by saying, hey, I want to do AI for
+computer security. Questions are, OK,
+what problem do you want to try to solve within
+that, and how do you [INAUDIBLE] So there is a particular
+type of competition that people have at
+schools and security conferences, things
+like that, which are called capture the flag. What I like-- I mean, what I like about these,
+at least as a stepping stone, is that it gives some
+idea of the breadth of the type of real
+problems that you'd like to solve in AI for security. So that's why-- so
+that's why I think it's interesting to talk about. There's different kinds
+of CTF competitions, and I am probably
+going to butcher this description a little bit. So I would feel free if
+you are a computer security expert in the audience. But the idea is there are
+different types of tasks that are like toy
+versions of something that you might do as a
+professional researcher, and that the task is set
+up in such a way that, for this particular type
+of jeopardy task, where there's a special message
+which they call a flag. And if you do the
+task for a while, you will see something
+where you're like, oh, yeah, that's the flag. Like, hey, I'm the
+flag or whatever that-- maybe it's not that, but-- and so-- and then you know
+you've solved the task and you can submit it. So one example
+would be like there are kinds that are like digital
+forensics, where they might say, OK, here's a file system,
+find the hidden message. Or they might give you more
+hints about what it is. And then you have
+to know, OK, how do I through this file
+system, do clever searches, maybe more complex ones I
+might need to do steganography, or I might need to find
+a QR code or whatever. So this would be more modeling
+digital investigations. There's the ones that are
+just cryptography, where you have an encrypted message,
+you want to decrypt it. There are ones where you want
+to [INAUDIBLE] challenges. You want to exploit
+memory vulnerabilities. You want to find a vulnerability
+in [INAUDIBLE] a certain place. There are ones where
+you want to identify a vulnerabilities or one--
+or the web ones where you want to do kind of injection
+or cross-site scripting attacks. And the reason I like to
+go through this is two. One is you can
+see how these map, even though these are
+games in some sense, you can see how they
+map to real-world tasks that you might want
+an agent to do. And the other thing
+that's nice is I think if you've been
+sitting in this class or even just in this lecture,
+by the end of this, I think if I just
+took one of those and gave like a random one of
+these to any of you and said, design an LLM agent for
+this, you could do it, right. It's pretty obvious why
+you would want an agent to do any one of these tasks. So I mean, again, we're saying
+for coding, like a toy game, benchmark isn't the same. It's not as complex,
+has a real-world task. But I think if you
+can't do these, you're probably not
+going to be able to do the real-world tasks either. So, and I think we're
+currently at the stage of agent development, where CTF
+tasks are still a challenge. So there are several different
+data sets, some of them are recent with historical
+CTF competitions of different difficulties. So like this top
+one, the NYU one is maybe the most recent one. There's also one with-- from
+high school level competitions. And each one of these will
+contain the task description, sandboxing environment
+and a way-- a rater that will automatically
+check whether you found the flag or not. So that gives you
+something to start with. And I want to go through one
+recent paper to show, OK, how would you use an agent
+for one of these tasks. So this one called EnIGMA. It's going to be the last-- maybe the second to last
+agent I'm going to show you. They do all run
+together after a while. So with this is-- so this is an agent
+to solve this-- these capture the
+flag competitions. So it is a ReACT style loop. So here's an example. And the-- do I say
+in the next slide? Yes, I do. So this is just an example
+of running some of the tools like you can do-- you
+can edit files and so on. So the types of tools that
+you have there are the general SWE-agent/SWE. So you can do file search. You can edit code,
+you can do things. You can have a command line. But there's a few-- One of the things I liked about
+this, a few interactive tools that the agent can
+call, which you probably want for security scenarios, one
+of which is having a debugger. So there are just different
+tools that are debug-- stateful tools. So the way this
+is designed, I'll show you a different
+debugger design in a minute, where
+the debugger says there's a command debugger
+start, debugger stop, debugger step. And those are just
+different top-level commands that the agent can use. And also there are tools
+for connecting to servers. And again, these are implemented
+as three different tools that change the trajectory state. So the agent can ask to start
+a connection, stop a connection or send a line. And the other thing that is-- it does a natural idea that
+you don't see very much is a lot of these-- if you need
+to examine a binary file as part of digital forensics, you're
+going to run up your context length very quickly. So there is one like
+for long tool outputs, there is this natural thing
+where, oh, let me just ask an LLM to summarize
+this long output. Then there are-- one thing
+which is a useful trick for when you're designing your
+own agents is well, the first thing is always look
+at the trajectories, right? It's just like when you're doing
+regular supervised learning, always or evaluation
+always look at the data. Always look at the data. So here it's like always look
+at the trajectories, right. You want to see what
+mistakes the agent's making and use that to
+design the harness. So one thing that's
+here is like there are bullet points in
+the system instruction that says, oh, yeah, I noticed
+the agent screwed up on this. Let me add a bullet
+point that says, please don't screw
+up in this way. And then it makes
+that error less often. So this had-- where-- OK. Let me-- so this is then
+agent versus-- on the left versus no agent on the right. And we see overall a
+similar set of increase that you saw from the
+initial SWE-agent results, like going from basically
+nothing is solved like 3% to 4% to double digit percentage. So it's nice when you see the-- so it seems like maybe this is
+the same thing as a SWE-agent-- SWE-Bench leaderboard, but at
+a different point in the curve. OK, so that's basically what I
+wanted to say about more general capture the flag challenges. So I wanted to end by talking
+about a specific security task which is
+vulnerability detection. So these would be like if you
+want to exploit a computer system to get unauthorized
+access or something like that, one way you could do
+this is by targeting bugs, right, in this kind of
+software or hardware network layer or whatever. So I'm going to talk
+specifically about-- so a vulnerability
+is basically a bug in the system that has
+security implications. So I'm going to
+talk specifically about software
+vulnerabilities, both because I'm talking
+about coding agents and because that's I think
+where most of the work has happened so far. So some examples, reading out of
+bounds or cross-site scripting or something like that,
+where there's kind of-- it could be potentially a
+small bug in the program that the attacker can
+use to do bad things. So let me take-- let
+me take an example of an out-of-bounds right,
+which is a particularly bad [? you ?] could have. So there is a taxonomy of
+these different software bugs that you can go to. And if you go to the taxonomy
+and say, OK, what kind of bug-- is it out of bounds right? It'll show you C code that looks
+like the code on the right, where it says, oh, OK. Like one illustrative
+version of this bug is, oh, if you have
+a function that returns negative 1 an error. And then I use that as an
+index, well the negative is going to get cast
+to-- it could get cast to something
+unsigned which is now going to point someplace
+way off into oblivion. And then you write something
+to memory you didn't want to. And then when you look
+at that, it really seems like detecting
+vulnerabilities should be pretty easy, right? Because you just want to
+find the state of flow and find things that
+aren't within the bounds. So here's another example
+of an out-of-bounds right. So this is an example of a
+function from the Linux kernel. I mean, I know the first example
+was probably relatively simple. You might have seen
+the bug right away. I don't know. Do you see the bug in this one? That's a joke. So what this is-- I mean, actually
+this-- it's not like-- I mean, it's too
+small for you to see. But this part of it isn't if
+you make reasonable assumptions about Linux kernel macros. This part of this code is not
+that difficult to understand. So what's happening
+Here is this function is copying some data
+from a network packet. If you look at the
+two arguments to-- I don't know what-- I guess RCV stands for receive. But the first argument
+is the actual packet, the second argument is a header. And what it is doing is on-- I just-- I have it in my notes. This line here,
+it's doing a malloc. The size is this
+thing's size, which it's pulling from the
+header and then on line-- let me see. It's 40. Oh, yeah, 44, I think. It's like it's doing a
+mem copy from something in the packet to
+this thing that's allocated based on the size. So what you can see here is
+that both of these things were read from the network. And there hasn't been
+checking done of the size. So that means that, oh, you
+could actually-- there's no-- the actual payload might not
+match the size in the header. And so if it doesn't, then
+the buffer that's allocated will be too small and
+who knows how much you're going to be writing. So the reason that-- so that's-- so this is
+actually a real vulnerability in the kernel. And the two things that I wanted
+to point out why this is hard. One is a bit of a needle
+in a haystack, right. There's going to be
+lots of functions like this in the Linux kernel. And it could be difficult to
+craft inputs that reach them. I have to know which
+network protocol this thing is handling and so on. And so this identifying
+the actual data flow that breaks is fairly
+simple, but identifying it from a lot of things that look
+similar but are perfectly safe is very difficult.
+And the second thing is this function
+on its own, it's not vulnerable or
+not vulnerable. That's not even a
+well-defined question to say, is this function vulnerable? Because if the caller checked,
+did the bounce checking, this function would
+be fine, right? So you actually can't
+understand whether this function is vulnerable or not
+without knowing globally what's going on. So that's why AI for
+vulnerability detection is hard. In fact, this slide is basically
+a criticism of the next slide. So the next slide
+is-- so we have this really nice
+source of data, which is the vulnerability database. So there is a place where
+if you have public software and you discover a
+vulnerability, you can a unique tracking number,
+write a description and give links to the
+patch any other information about the advisories. And there are thousands
+of these collected. So this seems great for
+machine learning, right? Because all I need
+to do is say, oh, let me download all of these
+vulnerabilities and doll them-- the patches. And I'll try to have
+some classifier that says whether things
+are vulnerable or not. So this very-- so
+I'm exaggerating my criticism of this, but it's
+a very natural thing to do. The first thing you
+see a big data is-- you see a big data set on
+the web is let's download and use it. It's what you should do. And so there's a bunch of
+authors who have done this and created data sets that say,
+oh, that the idea is that I'll take examples of code where
+we found a vulnerability, we've not found a
+vulnerability and try to have-- you can measure detection
+or patching based on this. Seems like a
+natural thing to do. Unfortunately, it's what
+I would have done too, when I got started in this. There's problems with it. The first problem is
+like how much of the code you put in the input, right? Like we saw in the
+previous slide, if I just look at one
+function that's been patched that might not be where-- I might not know, just
+looking at that function, whether there's a
+problem or not or just because if I take a
+function in the patch, that might not be-- what does
+it mean for a line of code to be vulnerable? There's a line of code where an
+incorrect memory access happens. Sure, but that line of code
+might be correct, right? The part that's incorrect
+might be something upstream. Did something wrong? So the patch might be very
+far from the line of code that crashed. So the idea, even if a line
+of code or a function being vulnerable, something I'd argue
+it's not a meaningful concept. Then the other thing
+like if you want it-- so there is a question
+of how much context do you want to give? And I'm not-- it's a very
+difficult question to answer. Or another question how do
+you handle tangled commits. So I mentioned this a
+little bit in SWE-Bench. Like if you want to use this
+as a patching data set, well, lots of times a patch
+will do more than just fix the vulnerability. That's a very common case. So learning can
+[? become ?] difficult. The other thing
+is like maybe this is easier judging correctness
+of patches is tricky, is like if you can run the
+code, you could probably judge correctness. If you're trying to
+do it statically, then that's difficult, right? Because there are many ways
+to patch a vulnerability. And the fact, I gave
+you this example of a vulnerability description
+like these are vague. They will give you
+some information about where to start. They'll be vague. They'll be noisy. Sometimes just because people
+are busy, they make mistakes. Sometimes because you don't want
+to give out too much information about a security vulnerability. So I think these are
+really difficult issues. It's really difficult to come
+up with a static evaluation of vulnerability
+detection in this way. And I think these
+issues are fundamental. I think people have done
+a lot of great work trying to get around them to make the
+data sets cleaner and clearer, but I think these data sets
+are really hard to use. So what I would-- so I would recommend instead for
+working on this kind of problem is do something dynamic. So you need something
+like a SWE-Bench eval where you can actually run
+the code on an input that exposes the vulnerability. There are some data sets. I left one out. That's one of the things you're
+supposed to ask me about. So I'll just tell
+you about it now. So there is a DARPA-sponsored
+competition going on now. The finals are later this year
+for like, AI-based vulnerability detection. There was an older one, 2016. It's also interesting both
+because you can get the programs and also, I think
+the story of it is interesting if you
+want to look it up. There is a more recent
+security evaluation from Meta that contains some-- it tests various parts
+of security for AI and AI for security. But there is a memory
+vulnerability thing. There is a more recent
+thing that I like, which I forgot to put on the
+slide, which is A-R-V-O, ARVO. It's for some past
+vulnerabilities that have been found by
+fuzzers containerized that you can run them. So you can actually checking
+of whether you found or fixed a [AUDIO OUT] So there is-- I'm about to talk about
+one more agent, I promise. But there is a huge
+amount of research on automated techniques for
+vulnerability detection, both some AI but also non AI. So probably the most
+commonly used technique for automatically
+finding vulnerabilities is called fuzzing. So that is like you
+run the programs on many, many random inputs. You can choose them like a
+genetic algorithm type search. So you can flip
+bits in the inputs. You can mix and match them. And so you try to
+find an input that causes like
+vulnerability to happen like an out-of-bounds rights. Those are like-- those are
+really important in practice. Like, security critical
+software is y-- is fuzzed extensively. So this is important technology. But it also asymptotes. Like, if you run a fuzzer
+for long enough on a software package like it will--
+you don't continually find bugs even if they exist. And there are famous
+examples of bugs where they've been found
+exploited in the wild. These are packages that
+are commonly fuzzed, but it was a difficult part
+of the code for the fuzzer to reach. There's a lot of work on. So I think there's an
+opportunity for AI to try to-- well, keep fuzzing things, but
+try to find deeper bugs, maybe that require complex invariants
+that fuzzers can't reach. People work on static
+analysis for vulnerabilities-- for vulnerability detection. There's a lot of
+interesting work that's been done in that space. The downside is
+combinatorial explosion and the false positive rate. It's very-- it's very
+difficult to define-- it's a very, very difficult
+business to be in. And then like on some
+of these other data sets I've talked about,
+like once you collect the vulnerability data sets on
+the previous slide, the ones that I don't like, you can try
+fine tuning an LLM on them. And so a lot of papers-- the papers that I cited will
+show you some results for that. But we wanted to do
+something different. So we thought there was an
+opportunity to try to use-- to try to leverage AI in
+a more interesting way. And so that's this project
+that I'm involved in, which is called the Big Sleep. One thing I've
+noticed, having named a project this is that
+most people do not have the same knowledge
+of classic cinema as I do. So the Big Sleep it's a
+famous movie from the 40s, but starring Humphrey Bogart. And if you like old
+movies, I recommend it. There's a story about why this
+is named that I won't get into. So this is a collaboration
+between some of us in Google DeepMind and
+some security experts from Google Project Zero. So these-- which-- this
+is a really nice security group within Google that
+tries to find vulnerabilities. It tries, it does. They also-- they try,
+they also succeed in finding vulnerabilities
+in open-source projects. And if you look at other
+things on their blog, you can see how intense some of
+the vulnerabilities that they find are. So this group of collaborators,
+we've been creating this agent. And the thing that
+motivated us about this was thinking about or
+one way to motivate this is by thinking about the
+experience of our collaborators in Project Zero as a human
+security researcher, auditing code to try to find
+a vulnerability. They don't think of it
+like a classifier, right? You don't just read
+some code as a person, then say yes, no, I think
+it's vulnerable, right? So instead what you do
+is you can read the code, try to understand it,
+you have some hypothesis about what would be
+going wrong, and then you try to run the code in
+a debugger or something, gain some information about
+whether your hypothesis is correct. And we wanted to
+see-- and we think that if an AI is
+going to be successful that it should do that too. This naturally suggested
+energetic approach where you'd have a code
+browser and a debugger. So one way you can
+think about this is dynamic analysis
+versus static. If you are-- if you're trying
+to train just an LLM maybe with some-- maybe some reasoning tokens
+or whatever to examine code, do some reasoning, come up
+with a vulnerability that's like static analysis. You haven't run the code. Whereas if you do an
+agentic approach that's more like running a fuzzer,
+it's more like dynamic analysis. So what-- we're focusing on
+a particular type of security issue in the Big
+Sleep, and that we're focusing on memory safety
+of vulnerabilities. And the idea is
+given a code base-- the goal of the agent is
+going to be like a fuzzer to generate an input that
+when it's run on this program under test causes
+bad memory behavior like an out-of-bounds
+read or something. And what is-- some
+of this is so you get some of the advantages
+of a ReACT style loop. But the other advantage
+compared to static analysis approaches and even compared to
+say, something like code editing is in some ways
+this is a simpler problem than code editing. And the reason is
+we have an Oracle. So if we can-- so I
+mentioned sanitizers to you earlier in the lecture. So when we are running
+the program in this agent, we are going to run it in
+a sanitizer, in a debugger. So the goal of the agent is to
+actually generate an input that causes the program to crash. And when it crashes, we know
+you found a security bug. So whereas if you're
+doing code generation, you don't know
+what the real-- you don't know what
+the true tests are. So you have some
+part at the end where you have to figure out, oh,
+which patch do I choose. Here, it's like if you
+find a bug, you find a bug. And one thing that's
+nice about-- well, let me actually say the agent
+before I start telling you about how good it is. So what we're going
+to do in Big Sleep, it's going to be a
+ReACT style agent. The goal of the agent is
+to generate an input that triggers a sanitizer crash. We have access to three
+different types of tools. So one is like a
+code browser tool. So this would be similar to what
+I said about AutoCode Rover, that we actually
+index the program. We know what all
+the identifiers are. So our tools are like
+the type of tools you do in IDE navigation. So like given the name of a
+method, jump to definition or we can also follow
+cross references. Then in order to generate
+inputs, we do that using-- we don't actually ask the agent
+to generate text directly. We ask the agent to write
+a Python program that generates the input. And the reason we do that is
+like if you want to do a buffer overrun or something, we
+don't want the agent to have to generate 20, 48 A's. We'd rather generate
+a Python program that says a times
+[INAUDIBLE] times, right? It's just simpler. So we tell the agent, please
+generate a Python program that sends a-- writes a string
+to a particular variable. We send that string
+to standard input. And then we can run the
+target program in a debugger. So we've talked about-- the EnIGMA agent
+also had a debugger. The design of this
+tool is similar, but a little bit different. So in our tool
+right now, the agent doesn't call the
+debugger interactively. What it does is it
+can say, at first it calls the Python
+interpreter to set up an input. And then when it
+calls the debugger, it just runs the whole program. And it can optionally
+specify a list of quote-unquote, break points. So a break point is a file
+line number and an expression optionally. And what it does is we tell
+the agent the break points, but they're really watch points. So we'll run the whole
+program without stopping. I mean, they're break. Wait a minute-- the whole
+program without stopping. And then at the end
+we tell the agent, here are the break
+points that were hit. and here's the value of the
+expressions you asked me for. So this way, this
+gives the agent another way to
+check whether when it generates an input, whether
+it's doing what it expects, whether it's having the control
+flow that the agent expects from the input. So let me show you an
+example of a trajectory. So I don't know what that meant. So this is a-- let me see if--
+this is an example of a program from the meta
+cybersec eval benchmark that I briefly mentioned
+in the previous slide. So there is a system instruction
+that I haven't told you that explains the test, the
+agent describes the tools and get-- presents a
+problem-solving strategy and some guidelines
+to the agent. So the first thing the
+agent is going to do is say, OK, please show
+me the main method. So here, all of--as I said,
+the control flow is completely dynamic like ReACT style. And there's no-- the agent
+has to use the code browser tools to see the code. So then it gets a thing
+of the main method. And typically,
+what the agent does is it summarizes the code,
+sometimes longer, sometimes less whenever it sees it. And then it'll decide, OK,
+I see an identifier there. You can't see there's a reader
+class because I sniffed it out. But somewhere in this there's
+a class called reader. So the agent says, OK, let
+me look at the reader class. And so it says,
+OK, let me look it. So it looks at this
+and it'll do a bunch of turns of code browsing. And after a while, the agent
+gets tired of code browsing and it decides, OK, I think
+I found a vulnerability now. So what it does then what
+we've instructed it to do is to write a
+report that explains what the vulnerability is and
+what happens, how to exploit it. So the agent will
+generate this text after it's seen enough code
+where it says, oh, on line 70, you use string copy, but you
+didn't use bound checking. So if I create an
+input of this type, then this is-- it loves saying
+a typical buffer overflow or a classic buffer overflow. Really likes that. So this could be
+exploited in this way. Here's my report. Now let me generate an input. And so the input is going
+to [INAUDIBLE] some Python. Now this is a Python code. Here's an example
+of what I said where you can construct a long input. The agent can-- It's helpful to have
+access to the library because, if you want to-- if you want to generate-- sorry, I'm having English-- if you wanted to agent to
+generate binary strings, for example, you can
+call number to bytes. It can-- also if it knows things
+about particular input formats, so if you have a program that
+takes JSON or images as input, then the Python program
+can generate that. So in this case, after
+generate some Python input, it calls the debugger function. It says, oh, these
+were like [INAUDIBLE] that it thought was related
+to the vulnerable code path. So it says oh, yeah,
+please show me those. And so now we run the
+program in the debugger. And the agent is sad because the
+program exited without crashing. Generally that's what
+you want, but not if you're doing
+a security audit. So now the agent is like,
+OK, it didn't trigger the bug that it thought it did. So it can-- let's
+keep iterating. And so then it writes some
+things about why it messed up. So here it says, oh, the program
+failed earlier than anticipated because I forgot to
+do such and such. And so let me
+update the input so that I don't make this mistake,
+and it might iterate through-- do that multiple
+times, and then-- and run the debugger
+again after each one. And then at some point it
+says, oh, the program crashes. Yay, it crashed. And then it gives some
+information and then that means the agent has succeeded. So where are we--
+where are we right now? So I'd say the current state of
+the agent is like we have ways of testing it on capture
+the flag challenges like, for example, this open
+[INAUDIBLE] [INAUDIBLE] benchmark and there--
+it's reasonably effective. There's still a lot that we
+need to do to scale it up. And we have found one
+real-world vulnerability that we've disclosed
+and that is in SQLite. So one thing about this, it's
+one of the advantages of agents for this type of
+security task is you can put any information
+that you have in the context. So in this case, we did a
+type of variant analysis. So it turns out that
+when you find a security bug, a vulnerability
+in a project, there are often many
+similar vulnerabilities at different places
+in the same project. So those are called variants. And some-- like a very large
+number of vulnerabilities that we see exploited
+in the wild, are variants of bugs that
+have already been fixed. So what we did here is we took
+a recent bug that had been fixed in SQLite and we added
+the information about it into the context and
+then said, I don't know, try to find something similar. And it did one thing
+I want to comment on, this is one thing that
+was working in our favor. This is maybe like a best case
+in some sense, because in-- I mentioned the little
+Red Riding Hood principle, the agent has seen
+a lot of SQL queries in the pre-training data. So if it sees one
+SQL query that used to that used to break the
+system, it's easy for it. It's reasonable that LLM could
+generate similar queries. And the other thing I
+mentioned, fuzzing, it turns out we did go back with
+general purpose fuzzers and try to see, OK, now that
+we know where the bug is, can I get a state of the art general
+purpose fuzzer to find it? And in some reason it was--
+and it was pretty hard to find. Like after 150 hours, we
+weren't able to find It. So yeah. So that's our status so far. So finally, let me
+pop up and say-- so I had a summarize just the
+security part of the lecture. So I think this is
+a wide open area. We're just getting started. There's a lot to be done. I think it's an exciting
+application area for AI because a genetic techniques
+seem really natural here. You need to interact
+with servers, you need to run debuggers. And it's also-- and it's
+also a really nice testbed for code understanding methods. That to find a security
+issue and to say, oh, yeah, this is a software
+vulnerability. You've got to think really
+carefully about the corner cases that the developer
+maybe didn't think of and you have to track
+of data flow [INAUDIBLE] along stretches of the program. So it-- or-- and if you're doing
+network or system security, you have to do that across
+multiple interacting parts-- programs in a system. So it really does require you to
+understand at a deep level what programs are doing,
+which makes it an interesting challenge
+model, challenge task for LLMs. And I've talked in
+depth about some capture the flag stuff and
+some vulnerabilities, but there's a huge space
+here that we're only starting to get into. And there's a lot
+of real talent-- and this is the time where
+we're starting to scale it up. So it's kind of an exciting
+time to be part of this area. So this is-- that's
+all I have to say and happy to take
+some more questions. Thank you.
